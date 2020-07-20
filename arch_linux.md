@@ -899,7 +899,7 @@ Install these prior to rebooting into live system with `pacstrap /mnt` for examp
 `base-devel`  
 `git`  
 `sudo`  
-`networkmanager`  
+`networkmanager` (Enable service) 
 `usbutils`  
 `pciutils`  
 
@@ -969,7 +969,8 @@ The base package does not include all tools from the live installation, so insta
 `p7zip`  
 `lzop`   
 `bashtop`  
-`neofetch`  
+`neofetch` 
+`ncdu`   
 `mc`  
 `nmon`  
 
@@ -981,13 +982,14 @@ The base package does not include all tools from the live installation, so insta
 
 `network-manager-applet`  
 `net-snmp`  
-`samba`  
+`samba` (Server)  
 `smbnetfs`  
 `nmap`  
 `smbclient`  
 `rsync`  
 `traceroute`  
 `dnsutils`  
+`firealld` (Enable service)  
 
 ***[Back to Table of Contents](#TOC)***
 
@@ -1017,6 +1019,8 @@ The base package does not include all tools from the live installation, so insta
 |NVidia|Open source|`xf86-video-nouveau`|`mesa`|`lib32-mesa`|[Nouveau](https://wiki.archlinux.org/index.php/Nouveau)|
 |NVidia|Proprietary|`nvidia`|`nvidia-utils`|`lib32-nvidia-utils`|[NVIDIA](https://wiki.archlinux.org/index.php/NVIDIA)|
 |NVidia|Proprietary|`nvidia-390xx` *AUR*|`nvidia-390xx-utils` *AUR*|`lib32-nvidia-390xx-utils` *AUR*|[NVIDIA](https://wiki.archlinux.org/index.php/NVIDIA)|
+
+**NVIDIA NOTE:** *install `nvidia-dkms` and add nvidia to the modules for mkinitcpio, use `sudo nano /etc/mkinitcpio.conf` edit the file and run `sudo mkinitcpio -P`*
 
 ***[Back to Table of Contents](#TOC)***
 
@@ -1209,7 +1213,7 @@ List nearby wifi networks:
 
 Connect to a wifi network:
 
->nmcli device wifi connect *SSID* password *password*
+>nmcli device wifi connect *SSID* p(Enable service)assword *password*
 
 Connect to a hidden network:
 
@@ -1227,7 +1231,7 @@ Reconnect an interface marked as disconnected:
 
 >nmcli connection up uuid *UUID*
 
-Get a list of UUIDs:
+Get a list of UUIDs:n also get a potat
 
 >nmcli connection show
 
@@ -1253,7 +1257,6 @@ Ensure you have the base packages from: **[Software Packages](#5)**
 
 Set the following services if required
 
-`systemctl disable dhcpcd.service`  
 `systemctl enable NetworkManager.service`  
 `systemctl enable sshd.service`  
 `systemctl enable cronie.service`  
@@ -1819,8 +1822,21 @@ Run `visudo` and add the following line:
 
 ***[Back to Table of Contents](#TOC)***
 
-#### <a name="8bc"></a> **Export Man Pages to HTML**
+#### <a name="8bc"></a> **Export Man Pages**
+
+**HTML**
 
 `BROWSER=firefox man -H <command>`
 
+ or
+ 
+`man -Thtml (command)<(filename).html>`   
+*Requires `groff` and `gropdf`*
+
+**PDF**
+
+`man -Tpdf (command)<(filename).pdf>`  
+*Requires `groff` and `gropdf`*
+
 ***[Back to Table of Contents](#TOC)***
+
