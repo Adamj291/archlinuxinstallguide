@@ -16,6 +16,11 @@ Initially written 2020 during lockdown.
 
 ## <a name="TOC"></a> **Table of Contents**
 
+**[Introduction](#0)**  
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*[About Arch Linux](#0a)*  
+
+---
+
 **[Initial Setup](#1)**  
 
 ---
@@ -71,22 +76,16 @@ Initially written 2020 during lockdown.
 [Additional Changes](#4i)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *[Enable Multilib](#4ia)*  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *[Optimise Mirrors](#4ib)*  
-[Boot Loader](#4j)  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *[MBR](#4ja)*  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *[UEFI](#4jb)*  
-[Microcode](#4k)  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *[GRUB](#4ka)*  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *[rEFInd](#4kb)*  
-[Reboot](#4l)  
 
 ---
 
-**[Software Packages](#5)**  
+**[Software Installation](#5)**  
 
 ---
 
 [Base Packages](#5)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Essential](#5a1)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[SCSI](#5a1a)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[File System](#5a2)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*[File System Optional](#5a2a)*  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[CPU](#5a3)  
@@ -120,7 +119,22 @@ Initially written 2020 during lockdown.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*[Gnome](#5b8d)*  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*[KDE Plasma](#5b8e)*  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*[MATE](#5b8f)*  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*[XFCE](#5b8g)* 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*[XFCE](#5b8g)*  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Applications](#5b9)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*[System](#5b9a)*  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*[Office](#5b9b)*  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*[Internet](#5b9c)*  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*[Multimedia](#5b9d)*  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*[Codecs](#5b9da)*  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*[Photo / Image Editing](#5b9e)*  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*[Misc](#5b9f)*  
+[Boot Loader](#5c)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *[MBR](#5ca)*  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *[UEFI](#5cb)*  
+[Microcode](#5d)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *[GRUB](#5da)*  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *[rEFInd](#5db)*  
+[Reboot](#5e)  
 
 ---
 
@@ -131,14 +145,14 @@ Initially written 2020 during lockdown.
 [Internet access](#6a)  
 [Basic Config](#6a1)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *[Enable Services](#6a1a)*  
-[Lightdm Login Manager](#6b)  
+[Lightdm Login Manager Configuration](#6b)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *[Aether Theme Installation](#6ba)*  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *[Enable Numlock On at Boot](#6bb)*  
 [Yay](#6e)  
 [Themes & Icons](#6f)  
 [Plank](#6g)  
 [Grub Themes](#6h)  
-[Other Apps](#6i)  
+[Additional AUR Apps](#6i)  
 [Gaming](#6j)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *[Steam](#6ja)*  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *[Lutris](#6jb)*
@@ -162,6 +176,21 @@ Initially written 2020 during lockdown.
 [Identify USB Devices in use](#7k)  
 [“No object for D-Bus interface” When trying to access other partition](#7l)  
 [Possibly missing firmware for module: aic94xx/wd719x](#7m)  
+[Package Groups](#7n)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[base-devel](#7na)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[xorg](#7nb)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[xorg-apps](#7nc)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[xorg-drivers](#7nd)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[gnome](#7ne)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[gnome-extra](#7nf)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[deepin](#7ng)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[deepin-extra](#7nh)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[plasma](#7ni)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[kde-applications](#7nj)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[mate](#7nk)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[mate-extra](#7nl)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[xfce4](#7nm)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[xfce4-goodies](#7nn)    
 
 ---
 
@@ -172,25 +201,32 @@ Initially written 2020 during lockdown.
 [SystemD](#8a)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Listing Services](#8aa)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Logging](#8ab)  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Identify Boot Delays](#8ab)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Identify Boot Delays](#8ac)   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Crash Investigation](#8ad)  
 [CLI Extras](#8b)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Password Astrisk](#8ba)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Export Man Pages to HTML](#8bc)
 <div style="page-break-after: always;"></a></div>
 
-## <a name="1"></a> **Initial Setup**
+## <a name="0"></a> **Introduction**
 
-Obtain the latest ISO from the: 
-
-***[Arch Linux Website](https://www.archlinux.org/)***
-
-Further Information:
-
-***[Installation Process Wiki Page](https://wiki.archlinux.org/index.php/Category:Installation_process)***
+### <a name="0a"></a> **About Arch Linux**
 
 ***[Back to Table of Contents](#TOC)***
 
-### <a name =1-a> **Optional Install Script**
+## <a name="1"></a> **Initial Setup**
+
+Before Proceeding, make sure you have the necessary information and any data currently on the system is fully backed up, this means backed up on either removable media or cloud storage. This should be standard practice however beyond this point any data stored locally is at risk, you have been warned! (I will not be liable for any data loss)
+
+First you need to obtain the latest ISO from the: ***[Arch Linux Website](https://www.archlinux.org/)***
+
+Now you can either burn this to CD/DVD (If your still using Optical media), Flash it to a USB drive or if your using a virtual machine mount the ISO, information on how to do this can be found on the ***[Arch Linux Wiki](https://wiki.archlinux.org/index.php/Category:Installation_process)*** or a quick search. I personally use the application Balena Etch which can be installed on Linux, Mac or Windows.
+
+Before proceeding, its also worth having access to the ***[Arch Linux Wiki](https://wiki.archlinux.org/index.php/Category:Installation_process)*** this is an amazing resource and is considered the best wiki amoungst the Linux community.
+
+***[Back to Table of Contents](#TOC)***
+
+### <a name="1-a"></a> **Optional Install Script**
 
 ***[Archfi Install Script](#https://github.com/MatMoul/archfi)***  
 
@@ -533,7 +569,7 @@ Use the pacstrap script to install the base package, Linux kernel and firmware f
 
 `pacstrap /mnt base linux linux-firmware`
 
-For a complete overview of system software, go to the software section here: **[Software Packages](#5)**
+For a complete overview of system software, go to the software section here: **[Software Installation](#5)**
 
 > <mark>**IMPORTANT**</mark>
 Make sure you install a DHCP server, ie. `NetworkManager` and its also worth installing `sudo` to help further on with user creation.
@@ -612,7 +648,7 @@ Add the following:
 >Then export the locale
 >`export LANG=en_GB.UTF-8`
 
-If you didn't set them pe rmenantly before you can set the keyboard layout now by adding the following to `vconsole.conf`
+If you didn't set them permenantly before you can set the keyboard layout now by adding the following to `vconsole.conf`
 
 `nano /etc/vconsole.conf`
 
@@ -639,7 +675,7 @@ Add matching entries to ***[hosts(5)](https://jlk.fjfi.cvut.cz/arch/manpages/man
 
 `nano /etc/hosts`
 
-|/etc/hosts||||
+|/etc/||||
 |---|---|---|---|
 |127.0.0.1||localhost||
 |::1||localhost||
@@ -659,7 +695,8 @@ For LVM, system encryption or RAID, modify ***[mkinitcpio.conf(5)](https://jlk.f
 
 `mkinitcpio -P`
 
-*Run it to make sure the kernel has been installed properly*
+*Run it to make sure the kernel has been installed prope&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *[Enable Multilib](#4ia)*  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *[Optimise Mirrors](#4ib)*  rly*
 
 ***[Back to Table of Contents](#TOC)***
 
@@ -724,7 +761,589 @@ This will ensure you have the fastest mirrors possible.
 
 ***[Back to Table of Contents](#TOC)***
 
-### <a name="4j"></a> **Boot loader**
+## **<a name="5"></a> Software Installation**
+
+***[Back to Installation](#3)***  
+***[Back to Table of Contents](#TOC)***
+
+### <a name="5a"></a> **Base Packages**
+
+Install these prior to rebooting into live system with `pacstrap /mnt` for example:
+
+*`pacstrap /mnt base linux linux-firmware`*  
+
+#### <a name="5a1"></a> **Essential**
+
+These are required no matter what, ignore any of these and your system may not boot properly.
+
+Please decide on one of the linux kernals in bold as to how you want your system setup, ie more stable, etc.
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`base`|Minimal package set to define a basic Arch Linux installation.|N|
+|**`linux`**|**The Linux kernel and modules.**|**N**|
+|**`linux-lts`**|**The LTS Linux kernel and modules.**|**N**|
+|**`linux-zen`**|**The Linux ZEN kernel and modules.**|**N**|
+|**`linux-hardened`**|**The Security-Hardened Linux kernel and modules.**|**N**|
+|`linux-firmware`|Firmware files for Linux.|N|
+|`linux-headers`|Headers and scripts for building modules for the Linux kernel.|N|
+|`dkms`|Dynamic Kernel Modules System.|N|
+|`pacman-contrib`|Contributed scripts and tools for pacman systems.|N|  
+|`base-devel`|Core Linux Utilities, see [base-devel](#7na) for details.|N|
+|`git`|the fast distributed version control system.|N|
+|`sudo`|Give certain users the ability to run some commands as root.|N|
+|`networkmanager`|Network connection manager and user applications.|Y| 
+|`usbutils`|	USB Device Utilities.|N|
+|`pciutils`|PCI bus configuration space access library and tools.|N|
+|`pkgfile`|a pacman .files metadata explorer.|N|
+|`diffutils`|Utility programs used for creating patch files.|N|
+|`logrotate`|Rotates system logs automatically.|N|
+|`smartmontools`|Control and monitor S.M.A.R.T. enabled ATA and SCSI Hard Drives.|N|
+|`dialog`|A tool to display dialog boxes from shell scripts.|N|
+
+#### <a name="5a1a"></a> **SCSI**
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`lsscsi`|A tool that lists devices connected via SCSI and its transports.|N|
+|`hdparm`|A shell utility for manipulating Linux IDE drive/driver parameters.|N|
+|`sdparm`|A utility similar to hdparm but for SCSI devices.|N|
+|`sg3_util`|Generic SCSI utilities.|N|
+
+#### <a name="5a2"></a> **File System**
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`fuse2`|A library that makes it possible to implement a filesystem in a userspace program.|N|
+|`fuse3`|A library that makes it possible to implement a filesystem in a userspace program.	|N|
+|`ntfs-3g`|NTFS filesystem driver and utilities.|N|
+|`exfat-utils`|Utilities for exFAT file system.|N|
+|`exfatprogs`|exFAT filesystem userspace utilities for the Linux Kernel exfat driver.|N|
+|`gvfs`|Virtual filesystem implementation for GIO.|N|
+|`gvfs-smb`|Virtual filesystem implementation for GIO (SMB/CIFS backend; Windows client).|N|
+|`gvfs-afc`|Virtual filesystem implementation for GIO (AFC backend; Apple mobile devices).|N|
+|`gvfs-goa`|Virtual filesystem implementation for GIO (Gnome Online Accounts backend; cloud storage).|N|
+|`gvfs-gphoto2`|Virtual filesystem implementation for GIO (Gnome Online Accounts backend; cloud storage).|N|
+|`gvfs-google`|Virtual filesystem implementation for GIO (Google Drive backend).|N|
+|`gvfs-mtp`|	Virtual filesystem implementation for GIO (MTP backend; Android, media player).|N|
+|`gvfs-nfs`|Virtual filesystem implementation for GIO (NFS backend).|N|
+|`nfs-utils`|Support programs for Network File Systems.|N|
+|`dosfstools`|DOS filesystem utilities.|N|
+|`findutils`|GNU utilities to locate files.|N|
+|`mlocate`|Merging locate/updatedb implementation.|N|
+
+##### <a name="5a2a"></a> ***File System Optional***
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`btrfs-progs`|Btrfs filesystem utilities.|N|
+|`xfsprogs`|	XFS filesystem utilities.|N|
+|`f2fs-tools`|Tools for Flash-Friendly File System (F2FS).|N|
+|`jfsutils`|	JFS filesystem utilities.|N|
+|`reiserfsprogs`|library for accessing and manipulating reiserfs partitions.|N|
+|`lvm2`|	Logical Volume Manager 2 utilities.|N|
+|`dmraid`|Device mapper RAID interface.|N|
+|`mdadm`|A tool for managing/monitoring Linux md device arrays, also known as Software RAID	.|N|
+
+#### <a name="5a3"></a> **CPU**
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`amd-ucode`|Microcode update image for AMD CPUs.|N|
+|`intel-ucode`|Microcode update files for Intel CPUs.|N|
+
+#### <a name="5a4"></a> **Bootloaous kernel (when you arder**
+
+Choose either Grub or Refind.
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`grub`|	GNU GRand Unified Bootloader (2).|N|
+|`refind`|An EFI boot manager	.|N|
+|`os-prober`|Utility to detect other OSes on a set of drives.|N|
+|`efibootmgr`|Linux user-space application to modify the EFI Boot Manager.|N|
+
+#### <a name="5a5"></a> **CLI Text Editors**
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`less`|A terminal based program for viewing text files.|N|
+|`nano`|	Pico editor clone with enhancements.|N| 
+|`vim`|Vi Improved, a highly configurable, improved version of the vi text editor.|N|
+|`vi`|The original ex/vi text editor.|N|
+
+*Set default with `export EDITOR=(PACKAGE)`*
+
+***[Back to Installation](#3)***  
+***[Back to Table of Contents](#TOC)***
+
+### <a name="5b"></a> **Additional Packages**
+
+The base package does not include all tools from the live installation, so installing other packages may be necessary for a fully functional base system. In particular, consider installing:
+
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="5b1"></a>**System Utilities**
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`openssh`|Premier connectivity tool for remote login with the SSH protocol.|Y|
+|`cronie`|Daemon that runs specified programs at scheduled times and related tools.|Y|
+|`xdg-user-dirs`|Manage user directories like ~/Desktop and ~/Music.|Y|  
+|`haveged`|Entropy harvesting daemon using CPU timings.|Y|
+|`bash-completion`|Programmable completion for the bash shell.|N|
+|`man-db`|A utility for reading man pages|N|  
+|`man-pages`|Linux man pages.|N|
+|`texinfo`|GNU documentation system for on-line information and printed output.|N|
+|`lsb-release`|LSB version query program.|N|
+|`polkit`|Application development toolkit for controlling system-wide privileges.|N| 
+|`unrar`|The RAR uncompression program.|N|
+|`zip`|Compressor/archiver for creating and modifying zipfiles.|N|
+|`unzip`|	For extracting and viewing files in .zip archives|N|
+|`p7zip`|Command-line file archiver with high compression ratio.|N|
+|`unace`|An extraction tool for the proprietary ace archive format.|N|  
+|`xz`|Library and command line tools for XZ and LZMA compressed files.|N|
+|`lzop`|File compressor using lzo lib.|N|
+|`bashtop`|Linux resource monitor	|N|
+|`htop`|Linux resource monitor	|N|
+|`neofetch`|A CLI system information tool written in BASH that supports displaying images.|N|
+|`ncdu`|Disk usage analyzer with an ncurses interface.|N|
+|`mc`|Midnight Commander a CLI File Manager|N|  
+|`nmon`|AIX & Linux Performance Monitoring tool|N|
+|`archiso`|Tools for creating Arch Linux live and install iso images.|N|
+|`perl`|A highly capable, feature-rich programming language|N|
+|`python`|Next generation of the python high-level scripting language|N|
+|`xf86-input-synaptics`|Synaptics driver for notebook touchpads.|N|
+|`ddrescue`|GNU data recovery tool.|N|
+|`dd_rescue`|A dd version that is very useful for data-recovery.|N|
+|`testdisk`|Checks and undeletes partitions + PhotoRec, signature based recovery tool.|N|
+|`hardinfo`|A system information and benchmark tool.|N|
+|`hwinfo`|Hardware detection tool from openSUSE.|N|
+
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="5b2"></a> **Networking**
+
+##### <a name="5b2a"></a> **General**
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`network-manager-applet`|Applet for managing network connections|N|  
+|`net-snmp`|A suite of applications used to implement SNMP v1, SNMP v2c and SNMP v3 using both IPv4 and IPv6.|N|
+|`samba`|SMB Fileserver and AD Domain server.|N|
+|`smbnetfs`|small C program that mounts Microsoft network neighborhood in single directory.|N|
+|`smbclient`|Tools to access a server's filespace and printers via SMB.|N|
+|`nmap`|Utility for network discovery and security auditing.|N|
+|`traceroute`|Tracks the route taken by packets over an IP network.|N|
+|`rsync`|A fast and versatile file copying tool for remote and local files.|N|
+|`grsync`|GTK+ GUI for rsync to synchronize folders, files and make backups.|N|
+|**`firewalld`**|Firewall daemon with D-Bus interface.|Y|
+|**`ufw`**|Uncomplicated and easy to use CLI tool for managing a netfilter firewall	.|Y|
+|*`gufw`*|Uncomplicated way to manage your Linux firewall|N|
+|*`ufw-extras`*|Extra configuration files for UFW|N|
+
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b2b"></a> **Wi-Fi**
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`wpa_supplicant`|A utility providing key negotiation for WPA wireless networks.|N|
+
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b2c"></a> **Bluetooth**
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`blueman`|A GTK+ Bluetooth Manager (BlueZ 5) - git|N|
+|`bluez-utils`|Development and debugging utilities for the bluetooth protocol stack. Includes deprecated tools.|N|
+|`bluez`|Libraries and tools for the Bluetooth protocol stack.|N|
+|`bluez-libs`|Libraries for the bluetooth protocol stack.|N|
+
+To enable bluetooth, run `systemctl enable bluetooth` and `systemctl start bluetooth`
+
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="5b3"></a> **Video**
+
+##### <a name="5b3b"></a> **Nvidia**
+
+|Type|Driver|OpenGL|OpenGL (Multilib)|Documentation|
+|:---:|:---:|:---:|:---:|:---:|
+|Open source|`xf86-video-nouveau`|`mesa`|`lib32-mesa`|[Nouveau](https://wiki.archlinux.org/index.php/Nouveau)|
+|Proprietary|`nvidia`|`nvidia-utils`|`lib32-nvidia-utils`|[NVIDIA](https://wiki.archlinux.org/index.php/NVIDIA)|
+|Proprietary|`nvidia-390xx` *AUR*|`nvidia-390xx-utils` *AUR*|`lib32-nvidia-390xx-utils` *AUR*|[NVIDIA](https://wiki.archlinux.org/index.php/NVIDIA)|
+
+`nvidia-settings`  
+
+**NOTE:** *install `nvidia-dkms` and add nvidia to the modules for mkinitcpio, use `sudo nano /etc/mkinitcpio.conf` edit the file "MODULES=(nvidia)" and run `sudo mkinitcpio -P`*
+
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b3c"></a> **AMD**
+
+|Type|Driver|OpenGL|OpenGL (Multilib)|Documentation|
+|:---:|:---:|:---:|:---:|:---:|
+|Open source|`xf86-video-amdgpu`|`mesa`|`lib32-mesa`|[AMDGPU](https://wiki.archlinux.org/index.php/AMDGPU)|
+|Open source|`xf86-video-ati`|`mesa`|`lib32-mesa`|[ATI](https://wiki.archlinux.org/index.php/ATI)|
+
+`vulkan-radeon`  
+`xf86-video-amdgpu`  
+`catalyst`  
+`catalyst=total-hd234k`  
+
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b3d"></a> **Intel**
+
+|Type|Driver|OpenGL|OpenGL (Multilib)|Documentation|
+|:---:|:---:|:---:|:---:|:---:|
+|Open source|`xf86-video-intel`|`mesa`|`lib32-mesa`|[Intel graphics](https://wiki.archlinux.org/index.php/Intel_graphics)|
+
+For hybrid graphics install `optimus-manager`
+
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="5b4"></a> **Sound**
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`alsa-utils`|A patched version of the alsa-utils package to support transparent terminals.|N|
+|`alsa-plugins`|Additional ALSA plugins.|N|
+|`lib32-alsa-plugins`|Additional ALSA plugins.|N|
+|`pulseaudio`|A featureful, general-purpose sound server|
+|`pulseeffects`|Audio Effects for Pulseaudio Applications.|N|
+|`pulseaudio-alsa`|ALSA Configuration for PulseAudio.|N|
+|`pulseaudio-bluetooth`|Bluetooth support for PulseAudio.|N|
+|`pulseaudio-equalizer`|Equalizer for PulseAudio.|N|
+
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="5b5"></a>**Printing**
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`cups`|The CUPS Printing System - daemon package.|Y|
+|`cups-pdf`|PDF printer for cups.|N|
+|`hplip`|Drivers for HP DeskJet, OfficeJet, Photosmart, Business Inkjet and some LaserJet.|N|
+|`system-config-printer`|A CUPS printer configuration tool and status applet.|N|
+|`foomatic-db`|Foomatic - The collected knowledge about printers, drivers, and driver options in XML files, used by foomatic-db-engine to generate PPD files.|N|
+|`foomatic-db-engine`|Foomatic - Foomatic's database engine generates PPD files from the data in Foomatic's XML database. It also contains scripts to directly generate print queues and handle jobs.|N|
+|`foomatic-db-ppds`|Foomatic - PPDs from printer manufacturers.|N|
+|`foomatic-db-nonfree-ppds`|Foomatic - non-free PPDs from printer manufacturers.|N|
+|`foomatic-db-nonfree`|Foomatic - database extension consisting of manufacturer-supplied PPD files released under non-free licenses.|N|
+|`foomatic-gutenprint-ppds`|simplified prebuilt ppd files.|N|
+|`gutenprint`|Top quality printer drivers for POSIX systems.|N|
+|`ghostscript`|An interpreter for the PostScript language.|N|
+
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="5b6"></a> **XORG**
+
+##### <a name="5b6a"></a> **XORG Apps**
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`xorg`|Graphical Server Package Group, see [xorg](#7nb) for details.|N|
+|`xorg-xinit`|X.Org initialisation program.|N|
+|`xorg-apps`|Additional applications for xorg, see [xorg-apps](#7nc) for details.|N|
+|`xorg-drivers`|Additional Drivers for xorg, see [xorg-drivers](#7nd) for details.|N|
+
+
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b6b"></a> **Fonts**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`font-bh-ttf`|X.org Luxi Truetype fonts| 
+|`gsfonts`|(URW)++ Core Font Set.|
+|`sdl_ttf`|A library that allows you to use TrueType fonts in your SDL applications	.|
+|`ttf-bitstream-vera`|Bitstream Vera fonts.|  
+|`ttf-dejavu`|Font family based on the Bitstream Vera Fonts with a wider range of characters.|
+|`ttf-liberation`|Red Hats Liberation fonts.|
+|`xorg-fonts-type1`|X.org Type1 fonts.|
+|`ttf-ubuntu-font-family`|Ubuntu font family.|
+|`noto-fonts`|Google Noto TTF fonts.|
+|`ttf-opensans`|	Google Noto TTF fonts.|
+
+***[Back to Installation](#3)***  
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="5b7"></a> **Display Managers**
+
+##### <a name="5b7a"></a> **[GDM](https://wiki.archlinux.org/index.php/GDM)**
+
+GNOME display manager.  
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`gdm`|Display manager and login screen	||Y| 
+
+(Also included in `gnome` package group)  
+
+`systemctl enable gdm.service`  
+
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b7b"></a> **[LightDM](https://wiki.archlinux.org/index.php/LightDM)**
+
+Cross-desktop display manager, can use various front-ends written in any toolkit.  
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`lightdm`|A lightweight display manager	|Y|
+|`lightdm-gtk-greeter`|Default Greeter|N|
+
+`systemctl enable lightdm.service`  
+
+***[Back to Lightdm Login Manager Configuration](#6b)***
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b7c"></a> **[LXDM](https://wiki.archlinux.org/index.php/LXDM)**
+
+display manager. Can be used independent of the LXDE desktop environment.  
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`lxdm`|Lightweight X11 Display Manager.|Y|
+|`lxdm-gtk3`|Lightweight X11 Display Manager (GTK+ 3 version).|Y|
+
+`systemctl enable lxdm.service`  
+
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b7d"></a> **[SDDM](https://wiki.archlinux.org/index.php/SDDM)**
+
+QML-based display manager and successor to KDM; recommended for Plasma and LXQt. 
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`sddm`|QML based X11 and Wayland display manager.|Y|
+|`sddm-kcm`|KDE Config Module for SDDM.|N|
+  
+`systemctl enable sddm.service`  
+
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b7e"></a> **[XDM](https://wiki.archlinux.org/index.php/XDM)**
+
+X display manager with support for XDMCP, host chooser.  
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`xorg-xdm`|X Display Manager	|Y|
+
+`systemctl enable xdm.service`  
+
+***[Back to Installation](#3)***  
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="5b8"></a> **Desktop Environments**
+
+##### <a name="5b8a"></a> **[Budgie](https://wiki.archlinux.org/index.php/Budgie)** 
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`budgie-desktop`|Modern desktop environment from the Solus Project.|N|
+|`gnome`|Gnome desktop environment package group, see [gnome](#7ne) for details.|N|
+|`gnome-extra`|Gnome desktop environment extras, see [gnome-extra](#7nf) for details.|N|
+
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b8b"></a> **[Cinnamon](https://wiki.archlinux.org/index.php/Cinnamon)**
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`cinnamon`|Linux desktop which provides advanced innovative features and a traditional user experience.|N|
+|`nemo`|	Cinnamon file manager (Nautilus fork)|N|
+|`nemo-fileroller`|File archiver extension for Nemo|N|
+|`metacity`|Window manager of GNOME Flashback	(Fallback mode)|N|
+|`gnome-shell`|Next generation desktop shell (Fallback mode)|N|
+
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b8c"></a> **[Deepin](https://wiki.archlinux.org/index.php/Deepin)**
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`deepin`|The Deepin Desktop Environment.|N|
+|`deepin-extra`|extra applications for a more complete desktop environment.|N|
+
+*To be able to use the integrated network administration, the networkmanager package is required, and the NetworkManager.service must be started and enabled.*
+
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b8d"></a> **[GNOME](https://wiki.archlinux.org/index.php/GNOME)**
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`gnome`|Gnome desktop environment package group, see [gnome](#7ne) for details.|N|
+|`gnome-extra`|Gnome desktop environment extras, see [gnome-extra](#7nf) for details.|N|
+
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b8e"></a> **[KDE Plasma](https://wiki.archlinux.org/index.php/KDE_Plasma)**
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`plasma`|KDE Plasma Desktop, See [plasma](#7ni) for details|
+|`plasma-meta`|Meta package to install KDE Plasma(Full)|
+|`plasma-desktop`|KDE Plasma Desktop (Minimum)|
+|`kde-applications`|KDE Applications, See [kde-applications](#7nj) for details|
+|`kde-applications-meta`|Meta package for KDE Applications|
+
+To enable support for Wayland in Plasma, also install the `plasma-wayland-session` package. 
+
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b8f"></a> **[MATE](https://wiki.archlinux.org/index.php/MATE)**
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`mate`|An intuitive and attractive desktop environment|N|
+|`mate-extra`|additional utilities and applications that integrate well with the MATE desktop|N|
+
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b8g"></a> **[XFCE](https://wiki.archlinux.org/index.php/Xfce)**
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`xfce4`|lightweight and modular desktop environment|N|
+|`xfce4-goodies`|extra plugins and a number of useful utilities|N|
+
+***[Back to Installation](#3)***  
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="5b9"></a> **Applications**
+
+##### <a name="5b9a"></a> **System**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`gparted`|*Disk Partitioner*|
+|`gnome-disk-utility`|*Disk Utility*|
+|`baobab`|*Disk Usage*|
+|`tilda`| *Terminal*|
+|`terminator`| *Terminal*|
+|`xdg-utils`| *Editing Config Files*|
+|`gprename`|*File Renamer*|
+|`grub-customizer`|*Grub Customizer*|
+|`yelp`|*Help*|
+|`namcap`|*PKGBUILDs checker*|
+|`wavemon`|*CLI Wifi Scanner*|
+|`bleachbit`| *System Cleaner*|
+|`dconf-editor`|*Config Editor*|
+|`parcellite`| *Clipboard Manager*|
+
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b9b"></a> **Office**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`libreoffice-fresh`| *Office Suite*|
+|`xreader`| *Document Reader*|
+|`galculator`|*Calculator*|
+|`xed`| *Text Editor*|
+|`gedit`|*GNOME Text Editor*|
+|`pandoc`|*Markdown Export Tools*|
+|`discount`|*Markdown Export Tools*|
+|`calibre`|*eBook Manager*|
+|`inkscape`| *Vector Image Editor*|
+
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b9c"></a> **Internet**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`firefox`|*Web Browser*
+|`geary`|*E-Mail Client*|
+|`evolution`|*E-Mail Client*|
+|`qbittorrent`|*Bittorrent client*|
+
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b9d"></a> **Multimedia**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`cmus`|*Command Line Music Player*|
+|`vlc`|*Media Player*|
+|`celluloid`|*Media Player*|
+
+***[Back to Table of Contents](#TOC)***
+
+###### <a name="5b9da"></a> **CODECS**
+
+**Audio**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`flac`|Free Lossless Audio Codec|
+|`wavpack`|Audio compression format with lossless, lossy and hybrid compression modes|
+|`lame`|A high quality MPEG Audio Layer III (MP3) encoder|
+|`faac`|Freeware Advanced Audio Coder|
+|`faad2`|ISO AAC audio decoder|
+|`celt`|Low-latency audio communication codec|
+|`a52dec`|A free library for decoding ATSC A/52 streams|
+|`libdca`|Free library for decoding DTS Coherent Acoustics streams|
+|`libmad`|A high-quality MPEG audio decoder|
+|`libmpcdec`|MusePack decoding library|
+|`opencore-amr`|Open source implementation of the Adaptive Multi Rate (AMR) speech codec|
+|`opus`|Totally open, royalty-free, highly versatile audio codec|
+|`speex`|A free codec for free speech|
+|`libvorbis`|Reference implementation of the Ogg Vorbis audio format|
+|`libfdk-aac`|Fraunhofer FDK AAC codec library|
+|`fdkaac`|Command line encoder frontend for libfdk-aac|
+
+**Video**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`libmpeg2`|Library for decoding MPEG-1 and MPEG-2 video streams.|
+|`x264`|Open Source H264/AVC video encoder|
+|`x265`|Open Source H265/HEVC video encoder|
+|`libdv`|The Quasar DV codec (libdv) is a software codec for DV video|
+|`xvidcore`|XviD is an open source MPEG-4 video codec|
+|`ffmpeg`|Complete solution to record, convert and stream audio and video|
+
+**Images**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`jasper`|Software-based implementation of the codec specified in the emerging JPEG-2000 Part-1 standard|
+|`libwebp`|WebP library and conversion tools|
+
+##### <a name="5b9e"></a> **Photo / Image Editing**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`gimp`| *Photo Editor*|
+|`digikam`|*Raw Photo Tool*|
+|`darktable`|*Raw Photo Tool*|
+|`rawtherapee`|*Raw Photo Software*|
+|`shotwell`|*Photo Manager*|
+|`hugin`|*Panorma Software*|
+|`gnome-screenshot`|*Screenshot*|
+
+***[Back to Table of Contents](#TOC)***
+
+##### <a name="5b9f"></a> **Misc**Packages
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`sl`|*CLI Train*|
+|`lolcat`|*CLI Rainbow Effect*|
+|`cmatrix`|*Matrix on CLI*|
+
+***[Back to Installation](#3)***  
+***[Back to Table of Contents](#TOC)***
+
+### <a name="5c"></a> **Boot loader**
 
 Choose and install a Linux-capable boot loader. If you have an Intel or AMD CPU, enable microcode updates in addition.
 
@@ -732,7 +1351,7 @@ Recommended is the ***[Grub](https://www.archlinux.org/packages/?name=grub)*** b
 
 ***[Back to Table of Contents](#TOC)***
 
-#### <a name="4ja"></a> **MBR**
+#### <a name="5ca"></a> **MBR**
 
 If not already installed, ensure you have the below installed:
 
@@ -754,7 +1373,7 @@ To have grub-mkconfig search for other installed systems and automatically add t
 
 ***[Back to Table of Contents](#TOC)***
 
-#### <a name="4jb"></a> **UEFI**
+#### <a name="5cb"></a> **UEFI**
 
 If not already installed, ensure you have the below installed:
 
@@ -818,7 +1437,7 @@ If Grub does not load within a dual boot environment then within linux do the fo
 
 ***[Back to Table of Contents](#TOC)***
 
-### <a name="4k"></a> **Microcode**
+### <a name="5d"></a> **Microcode**
 
 Processor manufacturers release stability and security updates to the processor microcode. These updates provide bug fixes that can be critical to the stability of your system. Without them, you may experience spurious crashes or unexpected system halts that can be difficult to track down.
 
@@ -832,7 +1451,7 @@ If your Arch installation is on a removable drive that needs to have microcode f
 
 ***[Back to Table of Contents](#TOC)***
 
-#### <a name="4ka"></a> **GRUB**
+#### <a name="5da"></a> **GRUB**
 
 grub-mkconfig will automatically detect the microcode update and configure GRUB appropriately. After installing the microcode package, regenerate the GRUB config to activate loading the microcode update by running:
 
@@ -852,7 +1471,7 @@ Repeat it for each menu entry.
 
 ***[Back to Table of Contents](#TOC)***
 
-#### <a name="4kb"></a> **rEFInd**
+#### <a name="5db"></a> **rEFInd**
 
 Edit boot options in /boot/refind_linux.conf and add initrd=boot\cpu_manufacturer-ucode.img (or initrd=cpu_manufacturer-ucode.img if /boot is a separate partition) as the first initramfs. For example:
 
@@ -866,7 +1485,7 @@ Users employing manual stanzas in esp/EFI/refind/refind.conf to define the kerne
 
 ***[Back to Table of Contents](#TOC)***
 
-### <a name="4l"></a> **Reboot**
+### <a name="5e"></a> **Reboot**
 
 Before rebooting, ensure you have at least a DHCP client installed and unmount your efi and root partitions:
 
@@ -874,324 +1493,6 @@ Before rebooting, ensure you have at least a DHCP client installed and unmount y
 
 *amend for whatever setup you have*
 
-***[Back to Table of Contents](#TOC)***
-
-## **<a name="5"></a> Software Packages**
-
-***[Back to Installation](#3)***  
-***[Back to Table of Contents](#TOC)***
-
-### <a name="5a"></a> **Base Packages**
-
-Install these prior to rebooting into live system with `pacstrap /mnt` for example:
-
-*`pacstrap /mnt base linux linux-firmware`*  
-
-#### <a name="5a1"></a> **Essential**
-
-`base`  
-`linux / linux-lts / linux-zen / linux-hardened`  
-`linux-firmware`  
-`linux-headers`  
-`dkms`  
-`dosfstools`  
-`pacman-contrib`  
-`base-devel`  
-`git`  
-`sudo`  
-`networkmanager` (Enable service) 
-`usbutils`  
-`pciutils`  
-
-#### <a name="5a2"></a> **File System**
-
-`fuse2`  
-`fuse3`  
-`ntfs-3g`  
-`exfat-utils`  
-`gvfs`  
-`gvfs-smb`  
-`nfs-utils`  
-`findutils`  
-`mlocate`  
-
-##### <a name="5a2a"></a> ***File System Optional***
-
-`btrfs-progs` (For btrfs filesystems)  
-`xfsprogs` (For XFS filesystems)  
-`f2fs-tools` (Tools for Flash-Friendly File System / F2FS)  
-`jfsutils` (For JFS filesystems)  
-`reiserfsprogs` (Reiser file system)  
-`lvm2` (Logical Volume Manager)  
-`dmraid` (Raid or Fake Raid Software)  
-
-#### <a name="5a3"></a> **CPU**
-
-`amd-ucode / intel-ucode` (Decide which is suitable)  
-
-#### <a name="5a4"></a> **Bootloader**
-
-`grub / refind` (Decide which is suitable)  
-`os-prober`  
-`efi-bootmgr`  
-
-#### <a name="5a5"></a> **CLI Text Editors**
-
-`less`  
-`nano`  
-`vim`  
-`vi`  
-
-*Set default with `export EDITOR=(PACKAGE)`*
-
-***[Back to Installation](#3)***  
-***[Back to Table of Contents](#TOC)***
-
-### <a name="5b"></a> **Additional Packages**
-
-The base package does not include all tools from the live installation, so installing other packages may be necessary for a fully functional base system. In particular, consider installing:
-
-***[Back to Table of Contents](#TOC)***
-
-#### <a name="5b1"></a>**System Utilities**
-
-`openssh` (Enable service)  
-`cronie` (Enable service)  
-`xdg-user-dirs` (Enable service)  
-`haveged` (Enable service)   
-`man-db`  
-`man-pages`  
-`lsb-release`  
-`polkit`  
-`unrar`  
-`zip`  
-`unzip`  
-`p7zip`  
-`lzop`   
-`bashtop`  
-`neofetch` 
-`ncdu`   
-`mc`  
-`nmon`  
-
-***[Back to Table of Contents](#TOC)***
-
-#### <a name="5b2"></a> **Networking**
-
-##### <a name="5b2a"></a> **General**
-
-`network-manager-applet`  
-`net-snmp`  
-`samba` (Server)  
-`smbnetfs`  
-`nmap`  
-`smbclient`  
-`rsync`  
-`traceroute`  
-`dnsutils`  
-`firealld` (Enable service)  
-
-***[Back to Table of Contents](#TOC)***
-
-##### <a name="5b2b"></a> **Wi-Fi**
-
-`dialog`  
-`wpa_supplicant`  
-
-***[Back to Table of Contents](#TOC)***
-
-##### <a name="5b2c"></a> **Bluetooth**
-
-`blueman`  
-`bluez-utils`  
-`bluez`  
-`bluez-libs`  
-
-***[Back to Table of Contents](#TOC)***
-
-#### <a name="5b3"></a> **Video**
-
-|Brand|Type|Driver|OpenGL|OpenGL (Multilib)|Documentation|
-|:---:|:---:|:---:|:---:|:---:|:---:|
-|AMD/ATI|Open source|`xf86-video-amdgpu`|`mesa`|`lib32-mesa`|[AMDGPU](https://wiki.archlinux.org/index.php/AMDGPU)|
-|AMD/ATI|Open source|`xf86-video-ati`|`mesa`|`lib32-mesa`|[ATI](https://wiki.archlinux.org/index.php/ATI)|
-|Intel|Open source|`xf86-video-intel`|`mesa`|`lib32-mesa`|[Intel graphics](https://wiki.archlinux.org/index.php/Intel_graphics)|
-|NVidia|Open source|`xf86-video-nouveau`|`mesa`|`lib32-mesa`|[Nouveau](https://wiki.archlinux.org/index.php/Nouveau)|
-|NVidia|Proprietary|`nvidia`|`nvidia-utils`|`lib32-nvidia-utils`|[NVIDIA](https://wiki.archlinux.org/index.php/NVIDIA)|
-|NVidia|Proprietary|`nvidia-390xx` *AUR*|`nvidia-390xx-utils` *AUR*|`lib32-nvidia-390xx-utils` *AUR*|[NVIDIA](https://wiki.archlinux.org/index.php/NVIDIA)|
-
-**NVIDIA NOTE:** *install `nvidia-dkms` and add nvidia to the modules for mkinitcpio, use `sudo nano /etc/mkinitcpio.conf` edit the file and run `sudo mkinitcpio -P`*
-
-***[Back to Table of Contents](#TOC)***
-
-##### <a name="5b3b"></a> **Nvidia**
-
-`nvidia-settings`  
-
-***[Back to Table of Contents](#TOC)***
-
-##### <a name="5b3c"></a> **AMD**
-
-`vulkan-radeon`  
-`xf86-video-amdgpu`  
-`catalyst`  
-`catalyst=total-hd234k`  
-
-***[Back to Table of Contents](#TOC)***
-
-#### <a name="5b4"></a> **Sound**
-
-`alsa-utils`  
-`alsa-plugins`  
-`lib32-alsa-plugins`  
-`pulseaudio`  
-`pulseaudio-alsa`  
-`pulseaudio-bluetooth`  
-`pulseaudio-equalizer`  
-
-***[Back to Table of Contents](#TOC)***
-
-#### <a name="5b5"></a>**Printing**
-
-`cups`  
-`cups-pdf`  
-`hplip`  
-`system-config-printer`  
-`foomatic-db`  
-`foomatic-db-engine`  
-`foomatic-db-ppds`  
-`foomatic-db-nonfree-ppds`  
-`foomatic-db-nonfree`  
-`foomatic-gutenprint-ppds`  
-`gutenprint`  
-`ghostscript`  
-
-***[Back to Table of Contents](#TOC)***
-
-#### <a name="5b6"></a> **XORG**
-
-##### <a name="5b6a"></a> **XORG Apps**
-
-`xorg`  
-`xorg-xinit`  
-`xorg-apps`  
-`xorg-server`  
-`xorg-drivers`  
-
-***[Back to Table of Contents](#TOC)***
-
-##### <a name="5b6b"></a> **Fonts**
-
-`font-bh-ttf`  
-`font-bitstream-speedo`  
-`gsfonts`  
-`sdl_ttf`  
-`ttf-bitstream-vera`  
-`ttf-dejavu`  
-`ttf-liberation`  
-`xorg-fonts-type1`  
-`ttf-ubuntu-font-family`  
-`noto-fonts`  		
-`ttf-opensans`  
-
-***[Back to Installation](#3)***  
-***[Back to Table of Contents](#TOC)***
-
-#### <a name="5b7"></a> **Display Managers**
-
-##### <a name="5b7a"></a> **[GDM](https://wiki.archlinux.org/index.php/GDM)**
-
-GNOME display manager.  
-
-`gdm` (Also included in `gnome` package group)  
-`systemctl enable gdm.service`  
-
-***[Back to Table of Contents](#TOC)***
-
-##### <a name="5b7b"></a> **[LightDM](https://wiki.archlinux.org/index.php/LightDM)**
-
-Cross-desktop display manager, can use various front-ends written in any toolkit.  
-
-`lightdm`  
-`systemctl enable lightdm.service`  
-
-***[Back to Table of Contents](#TOC)***
-
-##### <a name="5b7c"></a> **[LXDM](https://wiki.archlinux.org/index.php/LXDM)**
-
-display manager. Can be used independent of the LXDE desktop environment.  
-
-`lxdm` or `lxdm-gtk3` for the GTK3 version.  
-`systemctl enable lxdm.service`  
-
-***[Back to Table of Contents](#TOC)***
-
-##### <a name="5b7d"></a> **[SDDM](https://wiki.archlinux.org/index.php/SDDM)**
-
-QML-based display manager and successor to KDM; recommended for Plasma and LXQt.  
-
-`sddm` Optionally install `sddm-kcm` for KDE.  
-`systemctl enable sddm.service`  
-
-***[Back to Table of Contents](#TOC)***
-
-##### <a name="5b7e"></a> **[XDM](https://wiki.archlinux.org/index.php/XDM)**
-
-X display manager with support for XDMCP, host chooser.  
-
-`xorg-xdm`  
-`systemctl enable xdm.service`  
-
-***[Back to Installation](#3)***  
-***[Back to Table of Contents](#TOC)***
-
-#### <a name="5b8"></a> **Desktop Environments**
-
-##### <a name="5b8a"></a> **[Budgie](https://wiki.archlinux.org/index.php/Budgie)** 
-`budgie-desktop`  
-`gnome`  
-`gnome-extra`  
-
-***[Back to Table of Contents](#TOC)***
-
-##### <a name="5b8b"></a> **[Cinnamon](https://wiki.archlinux.org/index.php/Cinnamon)**
-`cinnamon`  
-`metacity` and `gnome-shell` (Fallback mode)  
-
-***[Back to Table of Contents](#TOC)***
-
-##### <a name="5b8c"></a> **[Deepin](https://wiki.archlinux.org/index.php/Deepin)**
-`deepin`  
-`deepin-extra`  
-
-*To be able to use the integrated network administration, the networkmanager package is required, and the NetworkManager.service must be started and enabled.*
-
-***[Back to Table of Contents](#TOC)***
-
-##### <a name="5b8d"></a> **[GNOME](https://wiki.archlinux.org/index.php/GNOME)**
-`gnome`  
-`gnome-extra`  
-
-***[Back to Table of Contents](#TOC)***
-
-##### <a name="5b8e"></a> **[KDE Plasma](https://wiki.archlinux.org/index.php/KDE_Plasma)**
-`plasma` or `plasma-meta` (Full)  
-`plasma-desktop` (Minimal)  
-`kde-applications` or `kde-applications-meta`  
-
-***[Back to Table of Contents](#TOC)***
-
-##### <a name="5b8f"></a> **[MATE](https://wiki.archlinux.org/index.php/MATE)**
-`mate`  
-`mate-extra`  
-
-***[Back to Table of Contents](#TOC)***
-
-##### <a name="5b8g"></a> **[XFCE](https://wiki.archlinux.org/index.php/Xfce)**
-`xfce4`  
-`xfce4-goodies`  
-
-***[Back to Installation](#3)***  
 ***[Back to Table of Contents](#TOC)***
 
 ## <a name="6"></a> **Post Installation**
@@ -1263,7 +1564,9 @@ Set the following services if required
 `systemctl enable havegd.service`  
 `systemctl enable bluetooth.service`  
 `systemctl enable org.cups.cupsd.service`  
+`systemctl enable ufw.service`
 
+*Choose Applicable*
 `systemctl enable gdm.service`  
 `systemctl enable lightdm.service`  
 `systemctl enable lxdm.service`  
@@ -1272,9 +1575,9 @@ Set the following services if required
 
 ***[Back to Table of Contents](#TOC)***
 
-### <a name="6b"></a> **Lightdm Login Manager**
+### <a name="6b"></a> **Lightdm Login Manager Configuration**
 
-If you need lightdm as your display manager install it and enable it, see: **[Software Packages](#5)**
+If you need lightdm as your display manager install it and enable it, see: **[Lightdm](#5b7b)**
 
 You will probably want to install a greeter. A greeter is a GUI that prompts the user for credentials, lets the user select a session, and so on. It is possible to use LightDM without a greeter, but only if an automatic login is configured; otherwise you will need to install xorg-server and one of the greeter packages below.
 
@@ -1335,7 +1638,7 @@ And if required:
 `sudo cp --recursive Aether /usr/share/lightdm-webkit/themes/lightdm-webkit-theme-aether`
 
 4. Config 1
-`sudo sed -i 's/^webkit_theme\s*=\s*\(.*\)/webkit_theme = lightdm-webkit-theme-aether #\1/g' /etc/lightdm/lightdm-webkit2-greeter.conf`
+`./f`
 
 5. Config 2
 `sudo sed -i 's/^\(#?greeter\)-session\s*=\s*\(.*\)/greeter-session = lightdm-webkit2-greeter #\1/ #\2g' /etc/lightdm/lightdm.conf`
@@ -1388,6 +1691,7 @@ Install the `numlockx` package and then edit /etc/lightdm/lightdm.conf:
 
 ### <a name="6f"></a> **Themes & Icons**
 
+`sudo pacman -S papirus-icon-theme`
 `yay sardi`  
 `yay mint-themes`  
 `yay mint-x-icons`  
@@ -1428,79 +1732,42 @@ Install the `numlockx` package and then edit /etc/lightdm/lightdm.conf:
 
 ***[Back to Table of Contents](#TOC)***
 
-### <a name="6i"></a> **Other Apps**
+### <a name="6i"></a> **Additional AUR Apps**
 
-|**Command**|**Type**|
+|**Command**|**Description**|
 |:---:|:---:|
-|`sudo pacman -S bleachbit`| *System Cleaner*|
 |`yay pamac`| *Pacman GUI*|
-|`sudo pacman -S gimp`| *Photo Editor*|
 |`yay xviewer`| *Image Viewer*|
 |`yay pix-git`| *Image Viewer*|
-|`sudo pacman -S digikam`|*Raw Photo Tool*|
-|`sudo pacman -S darktable`|*Raw Photo Tool*|
-|`sudo pacman -S rawtherapee`|*Raw Photo Software*|
-|`sudo pacman -S shotwell`|*Photo Manager*|
-|`sudo pacman -S hugin`|*Panorma Software*|
-|`sudo pacman -S gnome-screenshot`|*Screenshot*|
 |`yay lollypop`| *Music Player*|
-|`pacman -S cmus`|*Command Line Music Player*|
 |`yay picard`|*Music Tagger*|
-|`sudo pacman -S vlc`|*Media Player*|
 |`yay spotify`|*Music Streaming*|
-|`sudo pacman -S parcellite`| *Clipboard Manager*|
-|`sudo pacman -S inkscape`| *Vector Image Editor*|
-|`sudo pacman -S dconf-editor`|*Config Editor*|
 |`yay google-chrome`|*Web Browser*|
-|`sudo pacman -S firefox`|*Web Browser*
-|`sudo pacman -S geary`|*E-Mail Client*|
-|`sudo pacman -S evolution`|*E-Mail Client*|
 |`yay msgviewer`|*Outlook msg viewer*|
 |`yay teams`|*Microsoft Teams*|
 |`yay whatsapp-nativefier-dark`|*Whatsapp*|
 |`yay bitwarden`|*Password Manager*|
-|`sudo pacman -S qbittorrent`|*Bittorrent client*|
 |`yay thonny`|*Python IDE*|
 |`yay timeshift`|*Recovery*|
-|`sudo pacman -S libreoffice-fresh`| *Office Suite*|
 |`yay freeoffice`| *Office Suite*|
-|`sudo pacman -S xreader`| *Document Reader*|
-|`sudo pacman -S galculator`|*Calculator*|
-|`sudo pacman -S xed`| *Text Editor*|
 |`yay focuswriter`|*Markdown / Text Editor*|
 |`yay haroopad`|*Markdown Editor*|
 |`yay remarkable`|*Markdown Editor*|
 |`yay ghostwriter`|*Markdown Editor*|
 |`yay multimarkdown`|*Markdown Export Tools*|
 |`yay commonmark`|*Markdown Export Tools*|
-|`sudo pacman -S pandoc`|*Markdown Export Tools*|
-|`sudo pacman -S discount`|*Markdown Export Tools*|
 |`yay kindlegen`|*eBook CLI Convertor*|
-|`sudo pacman -S calibre`|*eBook Manager*|
 |`yay koreader`|*Epub Reader*|
 |`yay sigil`|*Epub Editor*|
 |`yay joplin`|*Markdown Editor / Notebook*|
 |`yay cherrytree`|*Notebook*|
-|`sudo pacman -S grub-customizer`|*Grub Customizer*|
 |`yay grub2-theme-vimix-git`|*Grub Arch Theme*|
-|`sudo pacman -S xdg-utils`| *Editing Config Files*|
 |`yay system-log`|*System Log GUI*|
 |`yay gnome-system-monitor`|*System monitor GUI*|
-|`sudo pacman -S tilda`| *Terminal*|
-|`sudo pacman -S terminator`| *Terminal*|
-|`sudo pacman -S sl`|*CLI Train*|
-|`sudo pacman -S lolcat`|*CLI Rainbow Effect*|
-|`sudo pacman -S gparted`|*Disk Partitioner*|
-|`sudo pacman -S gnome-disk-utility`|*Disk Utility*|
-|`sudo pacman -S baobab`|*Disk Usage*|
 |`yay balena-etcher`|*USB Flasher*|
 |`yay gtkhash`|*Hash Check Utility*|
-|`sudo pacman -S gprename`|*File Renamer*|
-|`sudo pacman -S yelp`|*Help*|
-|`sudo pacman -S namcap`|*PKGBUILDs checker*|
 |`yay ttf-ms-fonts`|*Microsoft Fonts*|
 |`yay netdiscover`|*Network scanner with MAC vendors*|
-|`pacman -S wavemon`|*CLI Wifi Scanner*|
 
 
 ***[Back to Table of Contents](#TOC)***
@@ -1733,6 +2000,697 @@ Either kill or make action to stop it being used.
 
 Finally Run `mkinitcpio -p linux`.
 
+### <a name="7n"></a> **Package Groups**
+
+#### <a name="7na"></a> **base-devel**
+
+Below is a list of the packages contained within `base-devel`
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`autoconf`|A GNU tool for automatically configuring source code|
+|`automake`|A GNU tool for automatically creating Makefiles|
+|`binutils`|A set of programs to assemble and manipulate binary and object files|
+|`bison`|The GNU general-purpose parser generator|
+|`fakeroot`|Tool for simulating superuser privileges|
+|`file`|File type identification utility|
+|`findutils`|GNU utilities to locate files|
+|`flex`|A tool for generating text-scanning programs|
+|`gawk`|GNU version of awk|
+|`gcc`|The GNU Compiler Collection - C and C++ frontends|
+|`gettext`|GNU internationalization library|
+|`grep`|A string search utility|
+|`groff`|GNU troff text-formatting system|
+|`gzip`|GNU compression utility|
+|`libtool`|A generic library support script|
+|`m4`|The GNU macro processor|
+|`make`|GNU make utility to maintain groups of programs|
+|`pacman`|A library-based package manager with dependency support|
+|`patch`|A utility to apply patch files to original sources|
+|`pkgconf`|Package compiler and linker metadata toolkit|
+|`sed`|GNU stream editor|
+|`sudo`|Give certain users the ability to run some commands as root|
+|`texinfo`|GNU documentation system for on-line information and printed output|
+|`which`|A utility to show the full path of commands|
+
+***[Back to Essentials](#5a1)***  
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="7nb"></a> **xorg**
+
+**xorg group**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`xf86-video-vesa`|X.org vesa video driver|
+|`xorg-bdftopcf`|Convert X font from Bitmap Distribution Format to Portable Compiled Format|
+|`xorg-docs`|X.org documentations|
+|`xorg-font-util`|X.Org font utilities|
+|`xorg-fonts-100dpi`|X.org 100dpi fonts|
+|`xorg-fonts-75dpi`|X.org 75dpi fonts|
+|`xorg-fonts-encodings`|X.org font encoding files|
+|`xorg-iceauth`|ICE authority file utility|
+|`xorg-luit`|Filter that can be run between an arbitrary application and a UTF-8 terminal emulator|
+|`xorg-mkfontscale`|Create an index of scalable font files for X|
+|`xorg-server`|Xorg X server|
+|`xorg-server-common`|Xorg server common files|
+|`xorg-server-devel`|Development files for the X.Org X server|
+|`xorg-server-xephyr`|A nested X server that runs as an X application|
+|`xorg-server-xnest`|A nested X server that runs as an X application|
+|`xorg-server-xvfb`|Virtual framebuffer X server|
+|`xorg-server-xwayland`|run X clients under wayland|
+|`xorg-sessreg`|Register X sessions in system utmp/utmpx databases|
+|`xorg-setxkbmap`|Set the keyboard using the X Keyboard Extension|
+|`xorg-smproxy`|Allows X applications that do not support X11R6 session management to participate in an X11R6 session|
+|`xorg-x11perf`|Simple X server performance benchmarker|
+|`xorg-xauth`|X.Org authorization settings program|
+|`xorg-xbacklight`|RandR-based backlight control application|
+|`xorg-xcmsdb`|Device Color Characterization utility for X Color Management System|
+|`xorg-xcursorgen`|Create an X cursor file from PNG images|
+|`xorg-xdpyinfo`|Display information utility for X|
+|`xorg-xdriinfo`|Query configuration information of DRI drivers|
+|`xorg-xev`|Print contents of X events|
+|`xorg-xgamma`|Alter a monitor's gamma correction|
+|`xorg-xhost`|Server access control program for X|
+|`xorg-xinput`|Small commandline tool to configure devices|
+|`xorg-xkbcomp`|X Keyboard description compiler|
+|`xorg-xkbevd`|XKB event daemon|
+|`xorg-xkbutils`|XKB utility demos|
+|`xorg-xkill`|Kill a client by its X resource|
+|`xorg-xlsatoms`|List interned atoms defined on server|
+|`xorg-xlsclients`|List client applications running on a display|
+|`xorg-xmodmap`|Utility for modifying keymaps and button mappings|
+|`xorg-xpr`|Print an X window dump from xwd|
+|`xorg-xprop`|Property displayer for X|
+|`xorg-xrandr`|Primitive command line interface to RandR extension|
+|`xorg-xrdb`|X server resource database utility|
+|`xorg-xrefresh`|Refresh all or part of an X screen|
+|`xorg-xset`|User preference utility for X|
+|`xorg-xsetroot`|Classic X utility to set your root window background to a given pattern or color|
+|`xorg-xvinfo`|Prints out the capabilities of any video adaptors associated with the display that are accessible through the X-Video extension|
+|`xorg-xwd`|X Window System image dumping utility|
+|`xorg-xwininfo`|Command-line utility to print information about windows on an X server|
+|`xorg-xwud`|X Window System image undumping utility|
+
+***[Back to XORG](#5b6)***  
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="7nc"></a> **xorg-apps**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`xorg-bdftopcf`|Convert X font from Bitmap Distribution Format to Portable Compiled Format|
+|`xorg-iceauth`|ICE authority file utility|
+|`xorg-luit`|Filter that can be run between an arbitrary application and a UTF-8 terminal emulator|
+|`xorg-mkfontscale`|Create an index of scalable font files for X|
+|`xorg-sessreg`|Register X sessions in system utmp/utmpx databases|
+|`xorg-setxkbmap`|Set the keyboard using the X Keyboard Extension|
+|`xorg-smproxy`|Allows X applications that do not support X11R6 session management to participate in an X11R6 session|
+|`xorg-x11perf`|Simple X server performance benchmarker|
+|`xorg-xauth`|X.Org authorization settings program|
+|`xorg-xbacklight`|RandR-based backlight control application|
+|`xorg-xcmsdb`|Device Color Characterization utility for X Color Management System|
+|`xorg-xcursorgen`|Create an X cursor file from PNG images|
+|`xorg-xdpyinfo`|Display information utility for X|
+|`xorg-xdriinfo`|Query configuration information of DRI drivers|
+|`xorg-xev`|Print contents of X events|
+|`xorg-xgamma`|Alter a monitor's gamma correction|
+|`xorg-xhost`|Server access control program for X|
+|`xorg-xinput`|Small commandline tool to configure devices|
+|`xorg-xkbcomp`|X Keyboard description compiler|
+|`xorg-xkbevd`|XKB event daemon|
+|`xorg-xkbutils`|XKB utility demos|
+|`xorg-xkill`|Kill a client by its X resource|
+|`xorg-xlsatoms`|List interned atoms defined on server|
+|`xorg-xlsclients`|List client applications running on a display|
+|`xorg-xmodmap`|Utility for modifying keymaps and button mappings|
+|`xorg-xpr`|Print an X window dump from xwd|
+|`xorg-xprop`|Property displayer for X|
+|`xorg-xrandr`|Primitive command line interface to RandR extension|
+|`xorg-xrdb`|X server resource database utility|
+|`xorg-xrefresh`|Refresh all or part of an X screen|
+|`xorg-xset`|User preference utility for X|
+|`xorg-xsetroot`|Classic X utility to set your root window background to a given pattern or color|
+|`xorg-xvinfo`|Prints out the capabilities of any video adaptors associated with the display that are accessible through the X-Video extension|
+|`xorg-xwd`|X Window System image dumping utility|
+|`xorg-xwininfo`|Command-line utility to print information about windows on an X server|
+|`xorg-xwud`|X Window System image undumping utility|
+
+***[Back to XORG](#5b6)***  
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="7nd"></a> **xorg-drivers**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`xf86-input-evdev`|X.org evdev input driver|
+|`xf86-input-libinput`|Generic input driver for the X.Org server based on libinput|
+|`xf86-input-synaptics`|Synaptics driver for notebook touchpads|
+|`xf86-input-vmmouse`|X.org VMWare Mouse input driver|
+|`xf86-input-void`|X.org void input driver|
+|`xf86-video-amdgpu`|X.org amdgpu video driver|
+|`xf86-video-ati`|X.org ati video driver|
+|`xf86-video-dummy`|X.org dummy video driver|
+|`xf86-video-fbdev`|X.org framebuffer video driver|
+|`xf86-video-intel`|X.org Intel i810/i830/i915/945G/G965+ video drivers|
+|`xf86-video-nouveau`|Open Source 3D acceleration driver for nVidia cards|
+|`xf86-video-openchrome`|X.Org Openchrome drivers|
+|`xf86-video-qxl`|Xorg X11 qxl video driver|
+|`xf86-video-vesa`|X.org vesa video driver|
+|`xf86-video-vmware`|X.org vmware video driver|
+|`xf86-video-voodoo`|X.org 3dfx Voodoo1/Voodoo2 2D video driver|
+
+***[Back to XORG](#5b6)***  
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="7ne"></a> **gnome**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`baobab`|A graphical directory tree analyzer|
+|`cheese`|Take photos and videos with your webcam, with fun graphical effects|
+|`eog`|Eye of Gnome: An image viewing and cataloging program|
+|`epiphany`|A GNOME web browser based on the WebKit rendering engine|
+|`evince`|Document viewer (PDF, Postscript, djvu, tiff, dvi, XPS, SyncTex support with gedit, comics books (cbr,cbz,cb7 and cbt))|
+|`file-roller`|Create and modify archives|
+|`gdm`|Display manager and login screen|
+|`gedit`|GNOME Text Editor|
+|`gnome-backgrounds`|Background images and data for GNOME|
+|`gnome-books`|Access and organize your e-books on GNOME|
+|`gnome-boxes`|Simple GNOME application to access remote or virtual systems|
+|`gnome-calculator`|GNOME Scientific calculator|
+|`gnome-calendar`|Simple and beautiful calendar application designed to perfectly fit the GNOME desktop|
+|`gnome-characters`|A character map application|
+|`gnome-clocks`|Clocks applications for GNOME|
+|`gnome-color-manager`|GNOME Color Profile Tools|
+|`gnome-contacts`|Contacts Manager for GNOME|
+|`gnome-control-center`|GNOME's main interface to configure various aspects of the desktop|
+|`gnome-disk-utility`|Disk Management Utility for GNOME|
+|`gnome-documents`|A document manager application for GNOME|
+|`gnome-font-viewer`|A font viewer utility for GNOME|
+|`gnome-getting-started-docs`|Help a new user get started in GNOME|
+|`gnome-keyring`|Stores passwords and encryption keys|
+|`gnome-logs`|A log viewer for the systemd journal|
+|`gnome-maps`|A simple GNOME 3 maps application|
+|`gnome-menus`|GNOME menu specifications|
+|`gnome-music`|Music player and management application|
+|`gnome-photos`|Access, organize, and share your photos on GNOME|
+|`gnome-remote-desktop`|GNOME Remote Desktop server|
+|`gnome-screenshot`|Take pictures of your screen|
+|`gnome-session`|The GNOME Session Handler|
+|`gnome-settings-daemon`|GNOME Settings Daemon|
+|`gnome-shell`|Next generation desktop shell|
+|`gnome-shell-extensions`|Extensions for GNOME shell, including classic mode|
+|`gnome-software`|GNOME Software Tools|
+|`gnome-system-monitor`|View current processes and monitor system state|
+|`gnome-terminal`|The GNOME Terminal Emulator|
+|`gnome-themes-extra`|Extra Themes for GNOME Applications|
+|`gnome-user-docs`|User documentation for GNOME|
+|`gnome-user-share`|Easy to use user-level file sharing for GNOME|
+|`gnome-video-effects`|Collection of GStreamer effects for GNOME|
+|`gnome-weather`|Access current weather conditions and forecasts|
+|`grilo-plugins`|A collection of plugins for the Grilo framework|
+|`gvfs`|Virtual filesystem implementation for GIO|
+|`gvfs-afc`|Virtual filesystem implementation for GIO (AFC backend; Apple mobile devices)|
+|`gvfs-goa`|Virtual filesystem implementation for GIO (Gnome Online Accounts backend; cloud storage)|
+|`gvfs-google`|Virtual filesystem implementation for GIO (Google Drive backend)|
+|`gvfs-gphoto2`|Virtual filesystem implementation for GIO (gphoto2 backend; PTP camera, MTP media player)|
+|`gvfs-mtp`|Virtual filesystem implementation for GIO (MTP backend; Android, media player)|
+|`gvfs-nfs`|Virtual filesystem implementation for GIO (NFS backend)|
+|`gvfs-smb`|Virtual filesystem implementation for GIO (SMB/CIFS backend; Windows client)|
+|`mutter`|A window manager for GNOME|
+|`nautilus`|Default file manager for GNOME|
+|`networkmanager`|Network connection manager and user applications|
+|`orca`|Screen reader for individuals who are blind or visually impaired|
+|`rygel`|UPnP AV MediaServer and MediaRenderer that allows you to easily share audio, video and pictures, and control of media player on your home network|
+|`simple-scan`|Simple scanning utility|
+|`sushi`|A quick previewer for Nautilus|
+|`totem`|Movie player for the GNOME desktop based on GStreamer|
+|`tracker`|Desktop-neutral user information store, search tool and indexer|
+|`tracker-miners`|Collection of data extractors for Tracker/Nepomuk|
+|`vino`|A VNC server for the GNOME desktop|
+|`xdg-user-dirs-gtk`|Creates user dirs and asks to relocalize them|
+|`yelp`|Get help with GNOME|
+
+***[Back to Budgie](#5b8a)***  
+***[Back to Gnome](#5b8d)***   
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="7nf"></a> **gnome-extra**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`accerciser`|Interactive Python accessibility explorer for the GNOME desktop|
+|`dconf-editor`|dconf Editor|
+|`devhelp`|API documentation browser for GNOME|
+|`evolution`|Manage your email, contacts and schedule|
+|`five-or-more`|Remove colored balls from the board by forming lines|
+|`four-in-a-row`|Make lines of the same color to win|
+|`ghex`|A simple binary editor for the Gnome desktop|
+|`glade`|User Interface Builder for GTK+ applications|
+|`gnome-builder`|An IDE for writing GNOME-based software|
+|`gnome-chess`|Play the classic two-player boardgame of chess|
+|`gnome-devel-docs`|Developer documentation for GNOME|
+|`gnome-klotski`|Slide blocks to solve the puzzle|
+|`gnome-mahjongg`|Disassemble a pile of tiles by removing matching pairs|
+|`gnome-mines`|Clear hidden mines from a minefield|
+|`gnome-nettool`|Graphical interface for various networking tools|
+|`gnome-nibbles`|Guide a worm around a maze|
+|`gnome-robots`|Avoid the robots and make them crash into each other|
+|`gnome-sound-recorder`|A utility to make simple audio recording from your GNOME desktop|
+|`gnome-sudoku`|Test your logic skills in this number grid puzzle|
+|`gnome-taquin`|Move tiles so that they reach their places|
+|`gnome-tetravex`|Complete the puzzle by matching numbered tiles|
+|`gnome-todo`|Task manager for GNOME|
+|`gnome-tweaks`|Graphical interface for advanced GNOME 3 settings (Tweak Tool)|
+|`hitori`|GTK+ application to generate and let you play games of Hitori|
+|`iagno`|Dominate the board in a classic version of Reversi|
+|`lightsoff`|Turn off all the lights|
+|`polari`|An IRC Client for GNOME|
+|`quadrapassel`|Fit falling blocks together (Tetris-like game for GNOME)|
+|`swell-foop`|Clear the screen by removing groups of colored and shaped tiles|
+|`sysprof`|Kernel based performance profiler|
+|`tali`|Beat the odds in a poker-style dice game|
+|`gnome-code-assistance`|Code assistance services for GNOME|
+|`gnome-multi-writer`|Write an ISO file to multiple USB devices at once|
+|`gnome-recipes`|Recipe management application for GNOME|
+|`gnome-usage`|GNOME application to view information about use of system resources|
+
+***[Back to Budgie](#5b8a)***  
+***[Back to Gnome](#5b8d)***   
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="7ng"></a> **deepin**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`deepin-account-faces`|Account faces for Linux Deepin|
+|`deepin-anything`|Deepin Anything file search tool|
+|`deepin-api`|Golang bindings for dde-daemon|
+|`deepin-calendar`|Calendar for Deepin Desktop Environment|
+|`deepin-control-center`|New control center for linux deepin|
+|`deepin-daemon`|Daemon handling the DDE session settings|
+|`deepin-desktop-base`|Base component for Deepin|
+|`deepin-desktop-schemas`|GSettings deepin desktop-wide schemas|
+|`deepin-dock`|Deepin desktop-environment - dock module|
+|`deepin-file-manager`|Deepin File Manager|
+|`deepin-gtk-theme`|Deepin GTK Theme|
+|`deepin-icon-theme`|Deepin Icons|
+|`deepin-image-viewer`|Deepin Image Viewer|
+|`deepin-kwin`|KWin configures on DDE|
+|`deepin-launcher`|Deepin desktop-environment - Launcher module|
+|`deepin-menu`|Deepin menu service for building beautiful menus|
+|`deepin-network-utils`|DDE network utils|
+|`deepin-polkit-agent`|Deepin Polkit Agent|
+|`deepin-polkit-agent-ext-gnomekeyring`|GNOME keyring extension for dde-polkit-agent|
+|`deepin-qt5integration`|Qt platform theme integration plugins for DDE|
+|`deepin-qt5platform-plugins`|Qt platform plugins for DDE|
+|`deepin-screensaver`|Deepin screensaver viewer and tools|
+|`deepin-session-shell`|Deepin desktop-environment - session-shell module|
+|`deepin-session-ui`|Deepin desktop-environment - Session UI module|
+|`deepin-shortcut-viewer`|Deepin Shortcut Viewer|
+|`deepin-sound-theme`|Deepin sound theme|
+|`deepin-system-monitor`|A more user-friendly system monitor|
+|`deepin-turbo`|A daemon that helps to launch applications faster|
+|`deepin-wallpapers`|Default wallpapers for DDE|
+|`startdde`|starter of deepin desktop environment|
+
+***[Back to Deepin](#5b8c)***  
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="7nh"></a> **deepin-extra**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`deepin-album`|A fashion photo manager for viewing and organizing pictures|
+|`deepin-boot-maker`|Tool to create a bootable usb stick quick and easy|
+|`deepin-calculator`|An easy to use calculator for ordinary users|
+|`deepin-clipboard`|DDE clipboard manager component|
+|`deepin-clone`|Disk and partition backup/restore tool|
+|`deepin-community-wallpapers`|Community wallpapers for DDE|
+|`deepin-compressor`|A fast and lightweight application for creating and extracting archives|
+|`deepin-draw`|A lightweight drawing tool for Linux Deepin|
+|`deepin-editor`|Simple editor for Deepin|
+|`deepin-movie`|Movie player based on QtAV|
+|`deepin-music`|Awesome music player with brilliant and tweakful UI Deepin-UI based.|
+|`deepin-picker`|Color picker tool for deepin|
+|`deepin-printer`|Printer configuration project for DDE|
+|`deepin-reader`|A simple PDF reader, supporting bookmarks, highlights and annotations|
+|`deepin-screen-recorder`|Deepin Screen Recorder|
+|`deepin-screensaver-pp`|Optional PP screensaver resource for deepin screensaver|
+|`deepin-screenshot`|Easy-to-use screenshot tool for linuxdeepin desktop environment|
+|`deepin-terminal`|Default terminal emulation application for Deepin|
+|`deepin-voice-note`|A lightweight memo tool to make text notes and voice recordings|
+
+***[Back to Deepin](#5b8c)***  
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="7ni"></a> **plasma**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`bluedevil`|Integrate the Bluetooth technology within KDE workspace and applications|
+|`breeze`|Artwork, styles and assets for the Breeze visual style for the Plasma Desktop|
+|`breeze-gtk`|Breeze widget theme for GTK 2 and 3|
+|`discover`|KDE and Plasma resources management GUI|
+|`drkonqi`|The KDE crash handler|
+|`kactivitymanagerd`|System service to manage user's activities and track the usage patterns|
+|`kde-cli-tools`|Tools based on KDE Frameworks 5 to better interact with the system|
+|`kde-gtk-config`|GTK2 and GTK3 Configurator for KDE|
+|`kdecoration`|Plugin based library to create window decorations|
+|`kdeplasma-addons`|All kind of addons to improve your Plasma experience|
+|`kgamma5`|Adjust your monitor's gamma settings|
+|`khotkeys`|KHotKeys|
+|`kinfocenter`|A utility that provides information about a computer system|
+|`kmenuedit`|KDE menu editor|
+|`knetattach`|Wizard which makes it easier to integrate network resources with the Plasma Desktop|
+|`kscreen`|KDE's screen management software|
+|`kscreenlocker`|Library and components for secure lock screen architecture|
+|`ksshaskpass`|ssh-add helper that uses kwallet and kpassworddialog|
+|`ksysguard`|Track and control the processes running in your system|
+|`kwallet-pam`|KWallet PAM integration|
+|`kwayland-integration`|Provides integration plugins for various KDE frameworks for the wayland windowing system|
+|`kwayland-server`|Wayland server components built on KDE Frameworks|
+|`kwin`|An easy to use, but flexible, composited Window Manager|
+|`kwrited`|KDE daemon listening for wall and write messages|
+|`libkscreen`|KDE screen management software|
+|`libksysguard`|Library to retrieve information on the current status of computer hardware|
+|`milou`|A dedicated search application built on top of Baloo|
+|`oxygen`|KDE Oxygen style|
+|`plasma-browser-integration`|Components necessary to integrate browsers into the Plasma Desktop|
+|`plasma-desktop`|KDE Plasma Desktop|
+|`plasma-integration`|Qt Platform Theme integration plugins for the Plasma workspaces|
+|`plasma-nm`|Plasma applet written in QML for managing network connections|
+|`plasma-pa`|Plasma applet for audio volume management using PulseAudio|
+|`plasma-sdk`|Applications useful for Plasma development|
+|`plasma-thunderbolt`|Plasma integration for controlling Thunderbolt devices|
+|`plasma-vault`|Plasma applet and services for creating encrypted vaults|
+|`plasma-workspace`|KDE Plasma Workspace|
+|`plasma-workspace-wallpapers`|Additional wallpapers for the Plasma Workspace|
+|`polkit-kde-agent`|Daemon providing a polkit authentication UI for KDE|
+|`powerdevil`|Manages the power consumption settings of a Plasma Shell|
+|`sddm-kcm`|KDE Config Module for SDDM|
+|`systemsettings`|KDE system manager for hardware, software, and workspaces|
+|`user-manager`|A simple system settings module to manage the users of your system|
+|`xdg-desktop-portal-kde`|A backend implementation for xdg-desktop-portal using Qt/KF5|
+
+***[Back to KDE Plasma](#5b8e)***  
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="7nj"></a> **kde-applications**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`akonadi-calendar-tools`|CLI tools to manage akonadi calendars
+|`akonadi-import-wizard`|Import data from other mail clients to KMail
+|`akonadiconsole`|Akonadi management and debugging console
+|`akregator`|A Feed Reader by KDE
+|`ark`|Archiving Tool
+|`artikulate`|Improve your pronunciation by listening to native speakers
+|`audiocd-kio`|Kioslave for accessing audio CDs
+|`blinken`|Memory Enhancement Game
+|`bomber`|A single player arcade game
+|`bovo`|A Gomoku like game for two players
+|`cantor`|KDE Frontend to Mathematical Software
+|`cervisia`|CVS Frontend
+|`dolphin`|KDE File Manager
+|`dolphin-plugins`|Extra Dolphin plugins
+|`dragon`|A multimedia player where the focus is on simplicity, instead of features
+|`elisa`|A simple music player aiming to provide a nice experience for its users
+|`ffmpegthumbs`|FFmpeg-based thumbnail creator for video files
+|`filelight`|View disk usage information
+|`granatier`|A clone of the classic Bomberman game
+|`grantlee-editor`|Editor for Grantlee themes
+|`gwenview`|A fast and easy to use image viewer
+|`juk`|A jukebox, tagger and music collection manager
+|`k3b`|Feature-rich and easy to handle CD burning application
+|`kaddressbook`|KDE contact manager
+|`kajongg`|The ancient Chinese board game for 4 players
+|`kalarm`|Personal alarm scheduler
+|`kalgebra`|Graph Calculator
+|`kalzium`|Periodic Table of Elements
+|`kamera`|KDE integration for gphoto2 cameras
+|`kamoso`|A webcam recorder from KDE community
+|`kanagram`|Letter Order Game
+|`kapman`|A clone of the well known game Pac-Man
+|`kapptemplate`|KDE Template Generator
+|`kate`|Advanced Text Editor
+|`katomic`|A fun and educational game built around molecular geometry
+|`kbackup`|A program that lets you back up any directories or files
+|`kblackbox`|A game of hide and seek played on a grid of boxes
+|`kblocks`|The classic falling blocks game
+|`kbounce`|A single player arcade game with the elements of puzzle
+|`kbreakout`|A Breakout-like game
+|`kbruch`|Exercise Fractions
+|`kcachegrind`|Visualization of Performance Profiling Data
+|`kcalc`|Scientific Calculator
+|`kcharselect`|Character Selector
+|`kcolorchooser`|Color Chooser
+|`kcron`|Configure and schedule tasks
+|`kde-dev-scripts`|Scripts and setting files useful during development of KDE software
+|`kde-dev-utils`|Small utilities for developers using KDE/Qt libs/frameworks
+|`kdebugsettings`|An application to enable/disable qCDebug
+|`kdeconnect`|Adds communication between KDE and your smartphone
+|`kdegraphics-mobipocket`|A collection of plugins to handle mobipocket files
+|`kdegraphics-thumbnailers`|Thumbnailers for various graphics file formats
+|`kdenetwork-filesharing`|Properties dialog plugin to share a directory with the local network
+|`kdenlive`|A non-linear video editor for Linux using the MLT video framework
+|`kdepim-addons`|Addons for KDE PIM applications
+|`kdesdk-kioslaves`|KDE SDK KIO-Slaves
+|`kdesdk-thumbnailers`|Plugins for the thumbnailing system
+|`kdf`|View Disk Usage
+|`kdialog`|A utility for displaying dialog boxes from shell scripts
+|`kdiamond`|A single player puzzle game
+|`keditbookmarks`|Bookmark Organizer and Editor
+|`kfind`|Find Files/Folders
+|`kfloppy`|Floppy Formatter
+|`kfourinline`|A four-in-a-row game
+|`kgeography`|Geography Trainer
+|`kget`|Download Manager
+|`kgoldrunner`|A game of action and puzzle solving
+|`kgpg`|A GnuPG frontend
+|`khangman`|Hangman Game
+|`khelpcenter`|Application to show KDE Applications' documentation
+|`kig`|Interactive Geometry
+|`kigo`|An open-source implementation of the popular Go game
+|`killbots`|A simple game of evading killer robots
+|`kimagemapeditor`|HTML Image Map Editor
+|`kio-extras`|Additional components to increase the functionality of KIO
+|`kipi-plugins`|A collection of plugins extending the KDE graphics and image applications
+|`kirigami-gallery`|Gallery application built using Kirigami
+|`kiriki`|An addictive and fun dice game
+|`kiten`|Japanese Reference/Study Tool
+|`kjumpingcube`|A simple tactical game
+|`kleopatra`|Certificate Manager and Unified Crypto GUI
+|`klettres`|Learn The Alphabet
+|`klickety`|An adaptation of the Clickomania game
+|`klines`|A simple but highly addictive one player game
+|`kmag`|Screen Magnifier
+|`kmahjongg`|A tile matching game for one or two players
+|`kmail`|KDE mail client
+|`kmail-account-wizard`|KMail account wizard
+|`kmines`|The classic Minesweeper game
+|`kmix`|KDE volume control program
+|`kmousetool`|Clicks the mouse for you, reducing the effects of RSI
+|`kmouth`|Speech Synthesizer Frontend
+|`kmplot`|Mathematical Function Plotter
+|`knavalbattle`|A ship sinking game
+|`knetwalk`|Connect all the terminals to the server, in as few turns as possible
+|`knights`|Chess board by KDE with XBoard protocol support
+|`knotes`|Popup notes
+|`kolf`|A miniature golf game with 2d top-down view
+|`kollision`|A simple ball dodging game
+|`kolourpaint`|Paint Program
+|`kompare`|Graphical file differences tool
+|`konqueror`|KDE File Manager & Web Browser
+|`konquest`|The KDE version of Gnu-Lactic
+|`konsole`|KDE's terminal emulator
+|`kontact`|KDE Personal Information Manager
+|`kopete`|Instant Messenger
+|`korganizer`|Calendar and scheduling Program
+|`kpatience`|Offers a selection of solitaire card games
+|`krdc`|Remote Desktop Client
+|`kreversi`|A simple one player strategy game played against the computer
+|`krfb`|Desktop Sharing
+|`kross-interpreters`|Language interpreters to enable in-process scripting with Kross
+|`kruler`|Screen Ruler
+|`kshisen`|A solitaire-like game played using the standard set of Mahjong tiles
+|`ksirk`|A computerized version of a well known strategy game
+|`ksnakeduel`|A simple snake duel game
+|`kspaceduel`|Each of two possible players controls a satellite spaceship orbiting the sun
+|`ksquares`|A game modeled after the well known pen and paper based game of Dots and Boxes
+|`ksudoku`|A logic-based symbol placement puzzle
+|`ksystemlog`|System log viewer tool
+|`kteatime`|A handy timer for steeping tea
+|`ktimer`|Countdown Launcher
+|`ktouch`|Touch Typing Tutor
+|`ktuberling`|A simple constructor game suitable for children and adults alike
+|`kturtle`|Educational Programming Environment
+|`kubrick`|Based on the famous Rubik's Cube
+|`kwalletmanager`|Wallet management tool
+|`kwave`|A sound editor for KDE
+|`kwordquiz`|Flash Card Trainer
+|`kwrite`|Text Editor
+|`lokalize`|Computer-Aided Translation System
+|`lskat`|Lieutenant Skat is a fun and engaging card game for two players
+|`marble`|Desktop Globe
+|`mbox-importer`|Import mbox files to KMail
+|`minuet`|A KDE Software for Music Education
+|`okular`|Document Viewer
+|`palapeli`|A single-player jigsaw puzzle game
+|`parley`|Vocabulary Trainer
+|`picmi`|A nonogram logic game for KDE
+|`pim-data-exporter`|Import and export KDE PIM settings
+|`pim-sieve-editor`|Mail sieve editor
+|`poxml`|Translates DocBook XML files using gettext po files
+|`print-manager`|A tool for managing print jobs and printers
+|`rocs`|Graph Theory IDE
+|`signon-kwallet-extension`|KWallet integration for signon framework
+|`spectacle`|KDE screenshot capture utility
+|`step`|Interactive Physical Simulator
+|`svgpart`|A KPart for viewing SVGs
+|`sweeper`|System Cleaner
+|`telepathy-kde-accounts-kcm`|KCM Module for configuring Telepathy Instant Messaging Accounts
+|`telepathy-kde-approver`|KDE Channel Approver for Telepathy
+|`telepathy-kde-auth-handler`|Provide UI/KWallet Integration For Passwords and SSL Errors on Account Connect
+|`telepathy-kde-call-ui`|Voice/Video Call UI for Telepathy
+|`telepathy-kde-common-internals`|Common components for KDE-Telepathy
+|`telepathy-kde-contact-list`|KDE Telepathy contact list application
+|`telepathy-kde-contact-runner`|KRunner plugin for KDE Telepathy
+|`telepathy-kde-desktop-applets`|The KDE-Telepathy Plasma desktop applets
+|`telepathy-kde-filetransfer-handler`|KDE Telepathy file transfer handler
+|`telepathy-kde-integration-module`|Sits in KDED and takes care of various bits of system integration like setting user to auto-away or handling connection errors
+|`telepathy-kde-send-file`|A File manager plugin to launch a file transfer job with a specified contact
+|`telepathy-kde-text-ui`|Telepathy handler for Text Chats
+|`umbrello`|UML modeller
+|`yakuake`|A drop-down terminal emulator based on KDE konsole technology
+|`zeroconf-ioslave`|Network Monitor for DNS-SD services (Zeroconf)
+
+***[Back to KDE Plasma](#5b8e)***  
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="7nk"></a> **mate**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`caja`|File manager for the MATE desktop|
+|`marco`|A window manager for MATE|
+|`mate-backgrounds`|Background images and data for MATE|
+|`mate-control-center`|The Control Center for MATE|
+|`mate-desktop`|Library with common API for various MATE modules|
+|`mate-icon-theme`|MATE icon theme|
+|`mate-menus`|MATE menu specifications|
+|`mate-notification-daemon`|Notification daemon for MATE|
+|`mate-panel`|The MATE Panel|
+|`mate-polkit`|PolicyKit integration for the MATE desktop|
+|`mate-session-manager`|The MATE Session Handler|
+|`mate-settings-daemon`|The MATE Settings daemon|
+|`mate-themes`|Default themes for the MATE desktop|
+|`mate-user-guide`|MATE User Guide|
+
+***[Back to Mate](#5b8f)***  
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="7nl"></a> **mate-extra**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`atril`|MATE document viewer|
+|`caja-image-converter`|A Caja extension for simple image conversions|
+|`caja-open-terminal`|A Caja extension for opening terminals in arbitrary local paths|
+|`caja-sendto`|A Caja extension for sending files|
+|`caja-share`|A Caja extension to quickly share a folder|
+|`caja-wallpaper`|A Caja extension to quickly set wallpaper|
+|`caja-xattr-tags`|A Caja extension to see tags stored on xattrs|
+|`engrampa`|Archive manipulator for MATE|
+|`eom`|An image viewing and cataloging program for MATE|
+|`mate-applets`|Applets for MATE panel|
+|`mate-calc`|Calculator for the MATE desktop environment|
+|`mate-icon-theme-faenza`|Faenza icon theme for MATE|
+|`mate-media`|MATE Media Tools|
+|`mate-netbook`|A simple window management tool|
+|`mate-power-manager`|Power management tool for the MATE desktop|
+|`mate-screensaver`|Screensaver for MATE|
+|`mate-sensors-applet`|A MATE Panel applet to display readings from hardware sensors, including CPU temperature, fan speeds and voltage readings|
+|`mate-system-monitor`|A system monitor for MATE|
+|`mate-terminal`|The MATE Terminal Emulator|
+|`mate-user-share`|User level public file sharing via WebDAV for MATE|
+|`mate-utils`|Common MATE utilities for viewing disk usage, logs and fonts, taking screenshots, managing dictionaries and searching files|
+|`mozo`|MATE menu editing tool|
+|`pluma`|A powerful text editor for MATE|
+
+***[Back to Mate](#5b8f)***  
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="7nm"></a> **xfce4**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`exo`|Application library for Xfce|
+|`garcon`|Implementation of the freedesktop.org menu specification|
+|`thunar`|Modern file manager for Xfce|
+|`thunar-volman`|Automatic management of removeable devices in Thunar|
+|`tumbler`|D-Bus service for applications to request thumbnails|
+|`xfce4-appfinder`|An application finder for Xfce|
+|`xfce4-panel`|Panel for the Xfce desktop environment|
+|`xfce4-power-manager`|Power manager for Xfce desktop|
+|`xfce4-session`|A session manager for Xfce|
+|`xfce4-settings`|Settings manager of the Xfce desktop|
+|`xfce4-terminal`|A modern terminal emulator primarily for the Xfce desktop environment|
+|`xfconf`|Flexible, easy-to-use configuration management system|
+|`xfdesktop`|A desktop manager for Xfce|
+|`xfwm4`|Xfce's window manager|
+|`xfwm4-themes`|A set of additional themes for the Xfce window manager|
+
+***[Back to XFCE4](#5b8g)***  
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="7nn"></a> **xfce4-goodies**
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`mousepad`|Simple text editor for Xfce|
+|`orage`|A simple calendar application with reminders for Xfce|
+|`ristretto`|Fast and lightweight picture-viewer for Xfce4|
+|`thunar-archive-plugin`|Create and extract archives in Thunar|
+|`thunar-media-tags-plugin`|Adds special features for media files to the Thunar File Manager|
+|`xfburn`|A simple CD/DVD burning tool based on libburnia libraries|
+|`xfce4-artwork`|Backdrops for the Xfce4 desktop|
+|`xfce4-battery-plugin`|A battery monitor plugin for the Xfce panel|
+|`xfce4-clipman-plugin`|A clipboard plugin for the Xfce4 panel|
+|`xfce4-cpufreq-plugin`|CPU frequency plugin for the Xfce4 panel|
+|`xfce4-cpugraph-plugin`|CPU graph plugin for the Xfce4 panel|
+|`xfce4-datetime-plugin`|A date and time display plugin for the Xfce panel|
+|`xfce4-dict`|A dictionary plugin for the Xfce panel|
+|`xfce4-diskperf-plugin`|Plugin for the Xfce4 panel displaying instant disk/partition performance|
+|`xfce4-eyes-plugin`|A rolling eyes (following mouse pointer) plugin for the Xfce panel|
+|`xfce4-fsguard-plugin`|File system usage monitor plugin for the Xfce4 panel|
+|`xfce4-genmon-plugin`|plugin that monitors customizable programs stdout for the Xfce4 panel|
+|`xfce4-mailwatch-plugin`|Multi-protocol, multi-mailbox mail watcher for the Xfce4 panel|
+|`xfce4-mount-plugin`|Mount/umount utility for the Xfce4 panel|
+|`xfce4-mpc-plugin`|Control the Music Player Daemon from the Xfce4 panel|
+|`xfce4-netload-plugin`|A netload plugin for the Xfce panel|
+|`xfce4-notes-plugin`|A notes plugin for the Xfce4 panel|
+|`xfce4-notifyd`|Notification daemon for the Xfce desktop|
+|`xfce4-pulseaudio-plugin`|Pulseaudio plugin for Xfce4 panel|
+|`xfce4-screensaver`|Xfce Screensaver|
+|`xfce4-screenshooter`|Plugin that makes screenshots for the Xfce panel|
+|`xfce4-sensors-plugin`|A lm_sensors plugin for the Xfce panel|
+|`xfce4-smartbookmark-plugin`|Plugin for the Xfce4 panel that lets you quicksearch from selected websites|
+|`xfce4-systemload-plugin`|A system load plugin for the Xfce4 panel|
+|`xfce4-taskmanager`|Easy to use task manager|
+|`xfce4-time-out-plugin`|Take a break from your computer with this plugin for Xfce4|
+|`xfce4-timer-plugin`|Plugin to track time for the Xfce4 panel|
+|`xfce4-verve-plugin`|Command line plugin Xfce4 panel|
+|`xfce4-wavelan-plugin`|Plugin to monitor wifi connectivity for the Xfce4 panel|
+|`xfce4-weather-plugin`|A weather plugin for the Xfce4 panel|
+|`xfce4-xkb-plugin`|Plugin to switch keyboard layouts for the Xfce4 panel|
+|`parole`|Modern media player based on the GStreamer framework|
+|`xfce4-whiskermenu-plugin`|Menu for Xfce4|
+
+***[Back to XFCE4](#5b8g)***  
+***[Back to Table of Contents](#TOC)***
+
 ## <a name="8"></a> **Useful Commands**
 
 ### <a name="8a"></a> **SystemD**
@@ -1806,9 +2764,39 @@ Check startup Applications for anything unnecessary.
 
 `systemd-analyze blame`
 
-Dumps the results into a graphical SVG file for details analysis.
+This dumps the results into a graphical SVG file for details analysis.
 
 `systemd-analyze plot > plot.svg`
+
+This command prints a tree of the time-critical chain of units (for each of the specified UNIT s or for the default target otherwise). The time after the unit is active or started is printed after the "@" character.
+
+`systemd-analyze critical-chain [ UNIT ...]`
+
+If a boot delay is caused by `man-db` then disable the service with:
+
+`systemctl disable man-db.service`
+
+And ensure you either manually run `mandb` after updates or add to script.
+
+***[Back to Table of Contents](#TOC)***
+
+#### <a name="8ad"></a> **Crash Investigation**
+
+1. List recent boots with `last -F | sort -r` if you see entries for crashes then proceed to find out more details.
+
+2. To list boot records run: `journalctl --list-boots | less`
+
+3. Match the records from step 1 and two using the date and times provided.
+
+*From Step One:*
+>adam     tty7         :0               <mark>*Fri Jul  3 17:55:39 2020*</mark> - crash                     (17:33)
+
+*From Step Two*
+><mark>**-85**</mark> ed5637fe3bab4d058e16b7baa25bfc8a <mark>*Fri 2020-07-03 17:55:39 BST—Fri 2020-07-03 22:01:01 BST*</mark>
+ 
+4. Run the command `jounalctl -b -ID -e` using the ID from step two at the beginning of the entry, for example: `journalctl -b -85 -e`
+
+5. This will display the errors
 
 ***[Back to Table of Contents](#TOC)***
 
@@ -1839,4 +2827,3 @@ Run `visudo` and add the following line:
 *Requires `groff` and `gropdf`*
 
 ***[Back to Table of Contents](#TOC)***
-
