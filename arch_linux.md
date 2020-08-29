@@ -84,6 +84,7 @@ Initially written 2020 during lockdown.
 ---
 
 [Base Packages](#5)  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Kernel](#5a0)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Essential](#5a1)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[SCSI](#5a1a)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[File System](#5a2)  
@@ -772,6 +773,49 @@ Install these prior to rebooting into live system with `pacstrap /mnt` for examp
 
 *`pacstrap /mnt base linux linux-firmware`*  
 
+#### <a name="5a0"></a> **Kernel**
+
+**Standard**
+
+Vanilla Linux kernel and modules, with a few patches applied.
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`linux`|The Linux kernel and modules|
+|`linux-docs`|Documentation for the Linux kernel|
+|`linux-headers`|Headers and scripts for building modules for the Linux kernel|
+
+**LTS**
+
+Long-term support (LTS) Linux kernel and modules.
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`linux-lts`|The LTS Linux kernel and modules|
+|`linux-lts-docs`|Documentation for the LTS Linux kernel|
+|`linux-lts-headers`|Documentation for the LTS Linux kernel|
+|`nvidia-lts`|NVIDIA drivers for linux-lts|
+
+**Zen**
+
+Result of a collaborative effort of kernel hackers to provide the best Linux kernel possible for everyday systems. Some more details can be found on https://liquorix.net (which provides kernel binaries based on Zen for Debian).
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`linux-zen`|The Linux ZEN kernel and modules|
+|`linux-zen-docs`|Documentation for the Linux ZEN kernel|
+|`linux-zen-headers`|Headers and scripts for building modules for the Linux ZEN kernel|
+
+**Hardened**
+
+A security-focused Linux kernel applying a set of hardening patches to mitigate kernel and userspace exploits. It also enables more upstream kernel hardening features than linux.
+
+|**Name**|**Description**|
+|:---:|:---:|
+|`linux-hardened`|The Security-Hardened Linux kernel and modules|
+|`linux-hardened-docs`|Documentation for the Security-Hardened Linux kernel|
+|`linux-hardened-headers`|Headers and scripts for building modules for the Security-Hardened Linux kernel|
+
 #### <a name="5a1"></a> **Essential**
 
 These are required no matter what, ignore any of these and your system may not boot properly.
@@ -781,10 +825,6 @@ Please decide on one of the linux kernals in bold as to how you want your system
 |**Name**|**Description**|**Enable Service**|
 |:---:|:---:|:---:|
 |`base`|Minimal package set to define a basic Arch Linux installation.|N|
-|**`linux`**|**The Linux kernel and modules.**|**N**|
-|**`linux-lts`**|**The LTS Linux kernel and modules.**|**N**|
-|**`linux-zen`**|**The Linux ZEN kernel and modules.**|**N**|
-|**`linux-hardened`**|**The Security-Hardened Linux kernel and modules.**|**N**|
 |`linux-firmware`|Firmware files for Linux.|N|
 |`linux-headers`|Headers and scripts for building modules for the Linux kernel.|N|
 |`dkms`|Dynamic Kernel Modules System.|N|
@@ -839,7 +879,7 @@ Please decide on one of the linux kernals in bold as to how you want your system
 |`btrfs-progs`|Btrfs filesystem utilities.|N|
 |`xfsprogs`|	XFS filesystem utilities.|N|
 |`f2fs-tools`|Tools for Flash-Friendly File System (F2FS).|N|
-|`jfsutils`|	JFS filesystem utilities.|N|
+|`jfsutils`|	JFS filesystem utilities.|N|zen
 |`reiserfsprogs`|library for accessing and manipulating reiserfs partitions.|N|
 |`lvm2`|	Logical Volume Manager 2 utilities.|N|
 |`dmraid`|Device mapper RAID interface.|N|
@@ -1007,16 +1047,23 @@ For hybrid graphics install `optimus-manager`
 
 #### <a name="5b4"></a> **Sound**
 
+**Pulseaudio**
+
+|**Name**|**Description**|**Enable Service**|
+|:---:|:---:|:---:|
+|`pulseaudio`|A featureful, general-purpose sound server|
+|`pulseeffects`|Audio Effects for Pulseaudio Applications.|N|
+|`pulseaudio-bluetooth`|Bluetooth support for PulseAudio.|N|
+|`pulseaudio-equalizer`|Equalizer for PulseAudio.|N|
+
+**Alsa**
+
 |**Name**|**Description**|**Enable Service**|
 |:---:|:---:|:---:|
 |`alsa-utils`|A patched version of the alsa-utils package to support transparent terminals.|N|
 |`alsa-plugins`|Additional ALSA plugins.|N|
 |`lib32-alsa-plugins`|Additional ALSA plugins.|N|
-|`pulseaudio`|A featureful, general-purpose sound server|
-|`pulseeffects`|Audio Effects for Pulseaudio Applications.|N|
 |`pulseaudio-alsa`|ALSA Configuration for PulseAudio.|N|
-|`pulseaudio-bluetooth`|Bluetooth support for PulseAudio.|N|
-|`pulseaudio-equalizer`|Equalizer for PulseAudio.|N|
 
 ***[Back to Table of Contents](#TOC)***
 
@@ -1201,7 +1248,7 @@ To enable support for Wayland in Plasma, also install the `plasma-wayland-sessio
 ##### <a name="5b8f"></a> **[MATE](https://wiki.archlinux.org/index.php/MATE)**
 
 |**Name**|**Description**|**Enable Service**|
-|:---:|:---:|:---:|
+|:---:|:---:|:---:|rent, but the solution is the same: co
 |`mate`|An intuitive and attractive desktop environment|N|
 |`mate-extra`|additional utilities and applications that integrate well with the MATE desktop|N|
 
