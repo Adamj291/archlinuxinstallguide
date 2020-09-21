@@ -1687,7 +1687,7 @@ And if required:
 `sudo cp --recursive Aether /usr/share/lightdm-webkit/themes/lightdm-webkit-theme-aether`
 
 4. Config 1
-`./f`
+`sudo sed -i 's/^webkit_theme\s*=\s*\(.*\)/webkit_theme = lightdm-webkit-theme-aether #\1/g' /etc/lightdm/lightdm-webkit2-greeter.conf`
 
 5. Config 2
 `sudo sed -i 's/^\(#?greeter\)-session\s*=\s*\(.*\)/greeter-session = lightdm-webkit2-greeter #\1/ #\2g' /etc/lightdm/lightdm.conf`
@@ -1790,6 +1790,7 @@ Install the `numlockx` package and then edit /etc/lightdm/lightdm.conf:
 |`yay pix-git`| *Image Viewer*|
 |`yay lollypop`| *Music Player*|
 |`yay picard`|*Music Tagger*|
+|``yay xplayer`|*Media Player*|
 |`yay spotify`|*Music Streaming*|
 |`yay google-chrome`|*Web Browser*|
 |`yay msgviewer`|*Outlook msg viewer*|
