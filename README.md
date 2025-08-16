@@ -861,7 +861,6 @@ Please decide on one of the linux kernals in bold as to how you want your system
 |`fuse2`|A library that makes it possible to implement a filesystem in a userspace program.|N|
 |`fuse3`|A library that makes it possible to implement a filesystem in a userspace program.	|N|
 |`ntfs-3g`|NTFS filesystem driver and utilities.|N|
-|`exfat-utils`|Utilities for exFAT file system.|N|
 |`exfatprogs`|exFAT filesystem userspace utilities for the Linux Kernel exfat driver.|N|
 |`gvfs`|Virtual filesystem implementation for GIO.|N|
 |`gvfs-smb`|Virtual filesystem implementation for GIO (SMB/CIFS backend; Windows client).|N|
@@ -884,7 +883,6 @@ Please decide on one of the linux kernals in bold as to how you want your system
 |`xfsprogs`|	XFS filesystem utilities.|N|
 |`f2fs-tools`|Tools for Flash-Friendly File System (F2FS).|N|
 |`jfsutils`|	JFS filesystem utilities.|N|zen
-|`reiserfsprogs`|library for accessing and manipulating reiserfs partitions.|N|
 |`lvm2`|	Logical Volume Manager 2 utilities.|N|
 |`dmraid`|Device mapper RAID interface.|N|
 |`mdadm`|A tool for managing/monitoring Linux md device arrays, also known as Software RAID	.|N|
