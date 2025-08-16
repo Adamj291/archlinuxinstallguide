@@ -725,6 +725,8 @@ Uncomment the wheel group, this allows all users in the wheel group to run all c
 
 `%wheel ALL=(ALL) ALL`
 
+To save and exit from vim use : and wq to write and Quit
+
 Add a user for a typical desktop system, eg: user that takes advantage of teh GUI desktop managers. /bin/bash specifies their login shell.
 
 `useradd -m -G wheel -s /bin/bash userOne`
